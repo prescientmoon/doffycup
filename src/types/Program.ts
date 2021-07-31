@@ -14,6 +14,8 @@ export type Block = ADT<{
   };
 }>;
 
+export type CodeBlockPath = number[];
+
 // ========== Low level dsl
 export type BlockColor = "yellow" | "red" | "blue";
 
