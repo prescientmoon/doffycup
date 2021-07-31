@@ -1,15 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+
 html,
 body {
     height: 100%;
     width: 100%;
     padding: 0;
     margin: 0;
-    background: #fafafa;
-    font-family: "Helvetica Neue", arial, sans-serif;
-    font-weight: 400;
-    color: #444;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    font-family: "Roboto Mono", monospace;
 }
 
 * {
@@ -21,4 +21,9 @@ body {
     text-align: center;
     font-size: 1.5em;
     padding-top: 100px;
+    height: 100%;
+}
+
+:root {
+    --spacing: 1rem;
 }

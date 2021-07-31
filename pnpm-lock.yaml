@@ -4,15 +4,17 @@ specifiers:
   '@preact/preset-vite': ^2.0.0
   preact: ^10.5.13
   preact-router: ^3.2.1
+  ts-adt: ^2.1.2
   typescript: ^4.3.2
   vite: ^2.4.4
 
 dependencies:
   preact: 10.5.14
+  preact-router: 3.2.1_preact@10.5.14
+  ts-adt: 2.1.2
 
 devDependencies:
   '@preact/preset-vite': 2.1.0_preact@10.5.14+vite@2.4.4
-  preact-router: 3.2.1_preact@10.5.14
   typescript: 4.3.5
   vite: 2.4.4
 
@@ -485,7 +487,7 @@ packages:
       preact: '>=10'
     dependencies:
       preact: 10.5.14
-    dev: true
+    dev: false
 
   /preact/10.5.14:
     resolution: {integrity: sha512-KojoltCrshZ099ksUZ2OQKfbH66uquFoxHSbnwKbTJHeQNvx42EmC7wQVWNuDt6vC5s3nudRHFtKbpY4ijKlaQ==}
@@ -536,6 +538,10 @@ packages:
     resolution: {integrity: sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=}
     engines: {node: '>=4'}
     dev: true
+
+  /ts-adt/2.1.2:
+    resolution: {integrity: sha512-UD0lr7eyiBjxogQjb1xMCjF7skrnxGZLNm4iROeU3ky5tJzXN0yQkkS4DfNGfM4RaUGMhgyrzf2wUynqK8AdWQ==}
+    dev: false
 
   /typescript/4.3.5:
     resolution: {integrity: sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==}
