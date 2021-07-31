@@ -1,5 +1,6 @@
 import { ADT } from "ts-adt";
 
+// ========== High level dsl
 export type Program = Block[];
 
 export type Block = ADT<{
@@ -11,3 +12,10 @@ export type Block = ADT<{
     program: Program;
   };
 }>;
+
+// ========== Low level dsl
+export type VisualBlock = {
+  name: string;
+  color: string;
+  children: Array<VisualBlock>;
+};

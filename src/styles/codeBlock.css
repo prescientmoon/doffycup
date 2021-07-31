@@ -1,0 +1,5 @@
+.code-block {
+  background: yellow;
+  padding: var(--spacing);
+  display: inline-block;
+}
