@@ -10,20 +10,18 @@ body {
     -moz-osx-font-smoothing: grayscale;
 
     font-family: "Roboto Mono", monospace;
-}
 
-* {
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
 #app {
     height: 100%;
-    text-align: center;
     font-size: 1.5em;
-    padding-top: 100px;
-    height: 100%;
 }
 
 :root {
     --spacing: 1rem;
+    --primary: #004346;
+    --secondary: #75dddd;
+    --tertiary: #172a3a;
 }

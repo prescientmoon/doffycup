@@ -1,5 +1,6 @@
 .code-block {
-  background: yellow;
-  padding: var(--spacing);
-  display: inline-block;
+    background: var(--secondary);
+    padding: var(--spacing);
+    display: inline-block;
+    border-radius: 5px;
 }
