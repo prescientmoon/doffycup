@@ -13,7 +13,7 @@ import { AppContext, initialState, updateState } from "../logic/state";
 import { useImmerReducer } from "use-immer";
 
 export function App() {
-  const context = useImmerReducer(updateState, initialState);
+  const context: AppContext = useImmerReducer(updateState, initialState);
 
   return (
     <AppContext.Provider value={context}>
