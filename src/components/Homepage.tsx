@@ -19,7 +19,7 @@ export default () => {
                     route("/levels", true);
                 }}
             >
-                Change Language
+                Change Language (not working yet)
             </div>
         </div>
     );
