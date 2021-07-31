@@ -4,9 +4,10 @@
   text-align: right;
 }
 
-.code-block > .code-block__children > .code-block {
+.code-block > .code-block__children {
+  display: flex;
+  flex-direction: column;
   margin-right: calc(-1 * var(--spacing));
-  width: 100%;
 }
 
 .code-block > .code-block__title {
