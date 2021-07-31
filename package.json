@@ -7,9 +7,11 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "immer": "^9.0.5",
     "preact": "^10.5.13",
     "preact-router": "^3.2.1",
-    "ts-adt": "^2.1.2"
+    "ts-adt": "^2.1.2",
+    "use-immer": "^0.6.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.0.0",

@@ -5,8 +5,7 @@ import {
   CodeBlockPath,
   Program,
   VisualBlock,
-} from "src/types/Program";
-import { match } from "ts-adt";
+} from "../types/Program";
 import "../styles/codeBlock.css";
 
 interface CodeBlockProps {
