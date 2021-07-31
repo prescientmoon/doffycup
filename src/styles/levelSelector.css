@@ -9,9 +9,23 @@
     justify-content: center;
     border: 1px solid black;
     transition: 250ms;
+    cursor: pointer;
 }
 
 .levelSelector:hover {
     background: var(--secondary);
     transition: 250ms;
+}
+
+.levelSelectorDisabled {
+    cursor: default;
+    color: darkgray;
+    border-color: darkgray;
+}
+.levelSelectorDisabled:hover {
+    background: none;
+}
+
+.levelUnlocked {
+    background: var(--secondary);
 }
