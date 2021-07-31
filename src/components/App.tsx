@@ -1,3 +1,9 @@
+import { Router } from "preact-router";
+
 export function App() {
-    return <></>;
+  return (
+    <>
+      <Router></Router>
+    </>
+  );
 }
