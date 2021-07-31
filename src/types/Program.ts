@@ -1,3 +1,4 @@
+import { ComponentChildren } from "preact";
 import { ADT } from "ts-adt";
 
 // ========== High level dsl
@@ -14,8 +15,10 @@ export type Block = ADT<{
 }>;
 
 // ========== Low level dsl
+export type BlockColor = "yellow" | "red" | "blue";
+
 export type VisualBlock = {
-  name: string;
-  color: string;
+  text: ComponentChildren;
+  color: BlockColor;
   children: Array<VisualBlock>;
 };
