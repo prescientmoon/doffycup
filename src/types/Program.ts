@@ -16,6 +16,12 @@ export type Block = ADT<{
 
 export type CodeBlockPath = number[];
 
+// ========== Program execution stuff
+export type ExecutionState = {
+  cups: Array<boolean>;
+  path: CodeBlockPath;
+};
+
 // ========== Low level dsl
 export type BlockColor = "yellow" | "red" | "blue";
 
