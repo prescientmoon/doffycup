@@ -35,5 +35,17 @@
 }
 
 .world-map {
-  padding: 1.3rem;
+  max-width: 1000px;
+  padding-top: 10%;
+  margin: auto;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0;
+  flex-grow: 1;
+  align-content: flex-start;
+
+  justify-content: flex-start;
+
+  align-items: center;
 }
