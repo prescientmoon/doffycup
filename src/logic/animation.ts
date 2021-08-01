@@ -263,7 +263,7 @@ export class CanvasRenderer {
 
       const label = Object.values(this.cupOrigins).indexOf(index) + 1;
 
-      if (label === 0) continue;
+      if (label === 0 || this.animationsInProgress.length) continue;
 
       this.context.fillStyle = "black";
       this.context.font = "100px Roboto mono";
