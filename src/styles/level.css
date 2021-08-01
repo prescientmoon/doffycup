@@ -5,7 +5,6 @@
 
 .level > .level__right,
 .level > .level__left > .level__left-script-container {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +17,6 @@
 
 .level > .level__left > .level__left-script-container {
   margin: 0 50px 0 0;
-  height: 75%;
 }
 
 .level > .level__right {
@@ -57,4 +55,45 @@
 
 .level > .level__right > .level__prompt > .level__prompt-text {
   font-size: 3rem;
+}
+
+.playAnimationButtonContainer {
+  position: absolute;
+  bottom: 6%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+
+  padding: 20px;
+
+  background: var(--primary);
+
+  width: 500px;
+  height: 30px;
+
+  transition: 250ms;
+}
+
+.playAnimationButtonContainer:hover {
+  cursor: pointer;
+  background: var(--tertiary);
+  transition: 250ms;
+}
+
+.playbackSpeedInput {
+  margin: 20px;
+  position: absolute;
+  right: 20px;
+}
+
+.playAnimationButton {
+  position: absolute;
+  left: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  color: white;
+  flex-wrap: nowrap;
 }

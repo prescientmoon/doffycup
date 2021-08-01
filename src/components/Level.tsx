@@ -43,6 +43,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
       return null;
     });
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
   const interpreterState = useRef(
     interpretProgram(currentProgram, {
@@ -173,6 +174,32 @@ export default ({ levelNumber }: { levelNumber: number }) => {
               <div className="level__prompt-text">{currentState.prompt}</div>
             </div>
           )}
+          {
+            <div
+              className="playAnimationButtonContainer"
+              onClick={() => {
+                // here put your on click stuff also use the playbackSpeed
+                // yourClickHandler(playbackSpeed)
+              }}
+            >
+              <div className="playAnimationButton">
+                Play Animation: x{playbackSpeed}
+              </div>
+              <input
+                className="playbackSpeedInput"
+                type="range"
+                min="1"
+                max="5"
+                value={playbackSpeed}
+                step="0.1"
+                onChange={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  setPlaybackSpeed(Number(target.value));
+                  console.log(target.value);
+                }}
+              />
+            </div>
+          }
         </div>
       </div>
     </>
