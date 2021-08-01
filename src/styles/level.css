@@ -195,3 +195,7 @@
   cursor: pointer;
   border: 1px solid white;
 }
+
+.level__success-prompt {
+  margin-top: -100px;
+}
