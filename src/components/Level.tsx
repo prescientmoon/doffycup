@@ -20,7 +20,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     useState<null | InterpreterSnapshot>(null);
   const renderer = useRef<CanvasRenderer>(new CanvasRenderer(null));
 
-  const currentLevel = levelsList[0];
+  const currentLevel = levelsList[levelNumber];
 
   const [currentSection, setCurrentSection] = useState(0);
   const currentProgram = currentLevel.sections[currentSection].program;
