@@ -17,8 +17,8 @@
 }
 
 .level > .level__left > .level__left-script-container {
-  margin-bottom: 10rem;
-  height: 80%;
+  margin: 0 20px 0 0;
+  height: 75%;
 }
 
 .level > .level__right {
