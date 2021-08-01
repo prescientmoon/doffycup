@@ -2,15 +2,17 @@ import { add2, Vec2Like } from "@thi.ng/vectors";
 import {
   AnimationQueues as AnimationQueue,
   AnimationState,
-  AnimationStep,
-  Block,
   FlatBlock,
 } from "src/types/Program";
 import * as Stream from "../types/Stream";
-import { clamp } from "./helpers";
+import cupTextureUrl from "../assets/cup.png";
 
 // ========== Constants
-const cupSize = [70, 100] as const;
+
+const cupTexture = new Image(342, 398);
+cupTexture.src = cupTextureUrl;
+
+const cupSize = [100, (100 * cupTexture.height) / cupTexture.width] as const;
 const cupSpacing = 20;
 
 // ========== Implementation
@@ -83,7 +85,13 @@ export const renderAnimationState = (
   state: AnimationState
 ) => {
   for (const cup of state.cups) {
-    ctx.fillRect(cup.position[0], cup.position[1], cupSize[0], cupSize[1]);
+    ctx.drawImage(
+      cupTexture,
+      cup.position[0],
+      cup.position[1],
+      cupSize[0],
+      cupSize[1]
+    );
   }
 };
 
@@ -227,7 +235,8 @@ export class CanvasRenderer {
     this.update();
 
     if (this.context) {
-      this.context.clearRect(0, 0, 1000, 1000);
+      this.context.clearRect(0, 0, 10000, 10000);
+      0;
       renderAnimationState(this.context, this.animationState);
     }
 
