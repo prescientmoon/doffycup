@@ -10,8 +10,9 @@ export interface LevelSection {
 
 export type Level = {
   cups: number;
-  sections: Array<LevelSection>;
+  program: Program;
   startingBalls: Partial<Record<BlockColor, number>>;
+  question: BlockColor;
 };
 
 export type Program = Block[];

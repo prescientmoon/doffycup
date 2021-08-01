@@ -9,12 +9,13 @@ import "../styles/level.css";
 import { ADT } from "ts-adt";
 import { Vec2Like } from "@thi.ng/vectors";
 import { BlockColor } from "src/types/Program";
+import { ComponentChildren } from "preact";
 
 const minimumHighlightTime = 700;
 
 type LevelState = ADT<{
   executing: {};
-  waitingForAnswer: { prompt: string };
+  waitingForAnswer: { prompt: ComponentChildren };
   waiting: {};
   waitinForLiftDown: {};
   waitingForLiftUp: {};
@@ -27,8 +28,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   const currentLevel = levelsList[levelNumber];
 
-  const [currentSection, setCurrentSection] = useState(0);
-  const currentProgram = currentLevel.sections[currentSection].program;
+  const currentProgram = currentLevel.program;
   const [lastMousePosition, setMousePosition] = useState<Vec2Like | null>(null);
 
   const [currentState, setCurrentState] = useState<LevelState>({
@@ -66,7 +66,15 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     if (snapshot.done) {
       setCurrentState({
         _type: "waitingForAnswer",
-        prompt: "Where is the ball?",
+        prompt: (
+          <>
+            Where is the{" "}
+            <span
+              className={`code-block__colored-ball code-block__colored-ball--${currentLevel.question}`}
+            />{" "}
+            ?
+          </>
+        ),
       });
 
       return setInterpreterSnapshot(null);
