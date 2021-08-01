@@ -3,6 +3,17 @@ import { ComponentChildren } from "preact";
 import { ADT } from "ts-adt";
 
 // ========== High level dsl
+export interface LevelSection {
+  hidden: boolean;
+  program: Program;
+}
+
+export type Level = {
+  cups: number;
+  sections: Array<LevelSection>;
+  startingBall: number;
+};
+
 export type Program = Block[];
 
 export type FlatBlock = ADT<{
@@ -19,11 +30,6 @@ export type Block =
       };
     }>
   | FlatBlock;
-
-export interface Level {
-  cups: number;
-  program: Program;
-}
 
 export type CodeBlockPath = number[];
 

@@ -14,8 +14,13 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     useState<null | InterpreterSnapshot>(null);
   const renderer = useRef<CanvasRenderer>(new CanvasRenderer(null));
 
+  const currentLevel = levelsList[0];
+
+  const [currentSection, setCurrentSection] = useState(0);
+  const currentProgram = currentLevel.sections[currentSection].program;
+
   const interpreterState = useRef(
-    interpretProgram(levelsList[0], {
+    interpretProgram(currentProgram, {
       path: [],
       cups: [true, false, false, false, false, false, false],
     })
@@ -76,7 +81,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           <div className="level__left-script-container">
             <ProgramBlock
               highlighted={interpreterSnapshot?.[0] ?? null}
-              program={levelsList[0]}
+              program={currentProgram}
             />
           </div>
         </div>
