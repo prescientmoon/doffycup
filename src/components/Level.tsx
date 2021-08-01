@@ -34,7 +34,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   const [lastMousePosition, setMousePosition] = useState<Vec2Like | null>(null);
   const [appState, setAppState] = useAppState();
 
-  const levelCompleted = appState.completed > levelNumber;
+  const levelCompleted = appState.completed == levelNumber;
 
   const [currentState, setCurrentState] = useState<LevelState>({
     _type: "waiting",
@@ -51,7 +51,9 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       return null;
     });
 
-  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [playbackSpeed, setPlaybackSpeed] = useState(
+    levelNumber == globalState.completed ? 20 : 1
+  );
 
   const interpreterState = useRef(
     interpretProgram(currentProgram, {
@@ -222,15 +224,21 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           {
             <div className="playAnimationButtonContainer">
               <div
-                className="playAnimationButton"
+                className={`playAnimationButton ${
+                  levelNumber == globalState.completed
+                    ? "playAnimationButtonSpecial"
+                    : ""
+                }`}
                 onClick={() => {
                   if (currentState._type !== "waiting") {
                     renderer.current.forceAnimationFinish();
                     renderer.current.shouldRenderBalls = true;
                     renderer.current.freshCups(currentLevel.cups, cups);
                   }
+                  console.log(playbackSpeed);
 
                   renderer.current.animationSpeed = playbackSpeed;
+
                   if (currentState._type === "waiting") {
                     setCurrentState({
                       _type: "waitinForLiftDown",
@@ -248,7 +256,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
               </div>
               <input
                 className={`playbackSpeedInput ${
-                  levelNumber == globalState.completed - 1
+                  levelNumber == globalState.completed
                     ? "playbackSpeedInputDisabled"
                     : ""
                 }`}
