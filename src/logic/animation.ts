@@ -1,10 +1,12 @@
 import { add2, Vec2Like } from "@thi.ng/vectors";
 import {
-  AnimationQueues,
+  AnimationQueues as AnimationQueue,
   AnimationState,
   AnimationStep,
+  Block,
   FlatBlock,
 } from "src/types/Program";
+import * as Stream from "../types/Stream";
 import { clamp } from "./helpers";
 
 // ========== Constants
@@ -15,7 +17,7 @@ const cupSpacing = 20;
 const blockToAnimation = (
   block: FlatBlock,
   placeToId: (id: number) => number | undefined
-): Array<AnimationQueues> => {
+): Array<AnimationQueue> => {
   switch (block._type) {
     case "swap":
       const a = placeToId(block.cups[0]);
@@ -25,7 +27,7 @@ const blockToAnimation = (
 
       const minAdinmationLength = Math.abs(block.cups[0] - block.cups[1]) * 200;
 
-      const first: AnimationQueues = {
+      const first: AnimationQueue = {
         cup: a,
         startedAt: performance.now(),
         step: 0,
@@ -46,15 +48,15 @@ const blockToAnimation = (
             amount: [0, cupSize[1] + cupSpacing],
           },
         ],
-        startedOn: a,
-        endsOn: b,
+        startedOn: block.cups[0],
+        endsOn: block.cups[1],
       };
 
-      const second: AnimationQueues = {
+      const second: AnimationQueue = {
         cup: b,
         startedAt: performance.now(),
-        startedOn: b,
-        endsOn: a,
+        startedOn: block.cups[1],
+        endsOn: block.cups[0],
         step: 0,
         steps: first.steps.map((_, index, steps) => {
           const analogue = steps[steps.length - index - 1];
@@ -95,11 +97,18 @@ export class CanvasRenderer {
       },
     ],
   };
-  private cupOrigins: Record<number, number> = { 0: 0 };
-  private animationsInProgress: Array<AnimationQueues> = [];
 
-  public constructor(private context: CanvasRenderingContext2D) {
-    this.render();
+  private cupOrigins: Record<number, number> = { 0: 0 };
+  private animationsInProgress: Array<AnimationQueue> = [];
+
+  public onAnimationOver: Stream.Stream<void>;
+  private emitOnAnimationOver: () => void;
+
+  public constructor(public context: CanvasRenderingContext2D | null) {
+    const animationOver = Stream.create<void>();
+
+    this.onAnimationOver = animationOver[0];
+    this.emitOnAnimationOver = animationOver[1];
   }
 
   public freshCups(count: number) {
@@ -117,18 +126,52 @@ export class CanvasRenderer {
     this.cupOrigins = Array(count)
       .fill(1)
       .map((_, index) => index);
+  }
 
-    this.animationsInProgress = blockToAnimation(
-      {
-        _type: "swap",
-        cups: [0, 4],
-      },
-      (id) => this.cupOrigins[id]
-    );
+  private forceAnimationFinish() {
+    for (const animation of this.animationsInProgress) {
+      for (
+        let stepIndex = animation.step;
+        stepIndex < animation.steps.length;
+        stepIndex++
+      ) {
+        const cup = this.animationState.cups[animation.cup];
+        cup.position = add2(
+          null,
+          cup.position,
+          animation.steps[stepIndex].amount
+        ) as Vec2Like;
+      }
+    }
+
+    this.animationsInProgress = [];
+  }
+
+  public animateBlock(block: FlatBlock) {
+    this.animate(blockToAnimation(block, (id) => this.cupOrigins[id]));
+  }
+
+  public animate(queues: Array<AnimationQueue>) {
+    this.forceAnimationFinish();
+
+    this.animationsInProgress = queues;
+
+    for (const queue of queues) {
+      if (this.cupOrigins[queue.startedOn] === queue.cup) {
+        delete this.cupOrigins[queue.startedOn];
+      } else {
+        console.log(this.cupOrigins);
+
+        throw new Error(
+          `Invalid animation: cup with id ${queue.cup} is supposed to exist at ${queue.startedOn}`
+        );
+      }
+    }
   }
 
   private update() {
     const now = performance.now();
+    const workToDo = !!this.animationsInProgress.length;
 
     for (let index = 0; index < this.animationsInProgress.length; index++) {
       const animation = this.animationsInProgress[index];
@@ -159,24 +202,25 @@ export class CanvasRenderer {
           }
 
           this.cupOrigins[animation.endsOn] = animation.cup;
-          this.cupOrigins[animation.cup] = animation.endsOn;
         } else {
           animation.step++;
           animation.startedAt = now;
         }
       }
     }
+
+    if (workToDo && this.animationsInProgress.length === 0) {
+      this.emitOnAnimationOver();
+    }
   }
 
-  private clear() {
-    this.context.clearRect(0, 0, 1000, 1000);
-  }
-
-  private render() {
+  public render() {
     this.update();
-    this.clear();
 
-    renderAnimationState(this.context, this.animationState);
+    if (this.context) {
+      this.context.clearRect(0, 0, 1000, 1000);
+      renderAnimationState(this.context, this.animationState);
+    }
 
     this.handlerId = requestAnimationFrame(() => this.render());
   }

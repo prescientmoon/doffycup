@@ -1,10 +1,9 @@
 import { ComponentChildren } from "preact";
-import {
+import type {
   Block,
   BlockColor,
   CodeBlockPath,
   Program,
-  VisualBlock,
 } from "../types/Program";
 import "../styles/codeBlock.css";
 
@@ -13,12 +12,17 @@ interface CodeBlockProps {
   highlighted: CodeBlockPath | null;
 }
 
+interface ProgramProps {
+  program: Program;
+  highlighted: CodeBlockPath | null;
+}
+
 const blockColor = (block: Block): BlockColor => {
   switch (block._type) {
     case "repeat":
-      return "blue";
+      return "orange";
     case "swap":
-      return "yellow";
+      return "blue";
   }
 };
 
@@ -57,6 +61,21 @@ const CodeBlockHead = (props: { block: Block }) => {
   }
 };
 
+export const ProgramBlock = (props: ProgramProps) => {
+  return (
+    <>
+      {props.program.map((child, index) => {
+        const highlighted =
+          index === props.highlighted?.[0] ? props.highlighted?.slice(1) : null;
+
+        return (
+          <CodeBlock highlighted={highlighted} block={child} key={index} />
+        );
+      })}
+    </>
+  );
+};
+
 export const CodeBlock = (props: CodeBlockProps) => {
   return (
     <div
@@ -70,16 +89,10 @@ export const CodeBlock = (props: CodeBlockProps) => {
         <CodeBlockHead block={props.block} />
       </div>
       <div className="code-block__children">
-        {blockChildren(props.block).map((child, index) => {
-          const highlighted =
-            index === props.highlighted?.[0]
-              ? props.highlighted?.slice(1)
-              : null;
-
-          return (
-            <CodeBlock highlighted={highlighted} block={child} key={index} />
-          );
-        })}
+        <ProgramBlock
+          highlighted={props.highlighted}
+          program={blockChildren(props.block)}
+        />
       </div>
     </div>
   );

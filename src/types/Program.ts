@@ -64,7 +64,7 @@ export type AnimationState = {
 };
 
 // ========== Low level dsl
-export type BlockColor = "yellow" | "red" | "blue";
+export type BlockColor = "orange" | "blue" | "cyan" | "green";
 
 export type VisualBlock = {
   text: ComponentChildren;

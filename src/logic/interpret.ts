@@ -5,10 +5,12 @@ import {
   Program,
 } from "src/types/Program";
 
+export type InterpreterSnapshot = [CodeBlockPath, Block];
+
 export function* interpretProgram(
   program: Program,
   state: ExecutionState
-): Generator<CodeBlockPath> {
+): Generator<InterpreterSnapshot> {
   for (let index = 0; index < program.length; index++) {
     const step = program[index];
 
@@ -18,8 +20,11 @@ export function* interpretProgram(
   }
 }
 
-export function* interpretBlock(block: Block, state: ExecutionState) {
-  yield state.path;
+export function* interpretBlock(
+  block: Block,
+  state: ExecutionState
+): Generator<[CodeBlockPath, Block]> {
+  yield [state.path, block];
 
   switch (block._type) {
     case "swap":
@@ -28,7 +33,8 @@ export function* interpretBlock(block: Block, state: ExecutionState) {
       state.cups[block.cups[1]] = temp;
       break;
     case "repeat":
-      yield* interpretProgram(block.program, state);
+      for (let step = 0; step < block.times; step++)
+        yield* interpretProgram(block.program, state);
       break;
   }
 }
