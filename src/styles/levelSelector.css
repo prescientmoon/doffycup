@@ -35,5 +35,36 @@
 }
 
 .world-map {
-  padding: 1.3rem;
+  max-width: 1000px;
+  padding-top: 10%;
+  margin: auto;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0;
+  flex-grow: 1;
+  align-content: flex-start;
+
+  justify-content: flex-start;
+
+  align-items: center;
+}
+
+.appContent,
+.level_right {
+  background: linear-gradient(-45deg, #00acca, #6a3ce7, #23a6d5, #6a00e2);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

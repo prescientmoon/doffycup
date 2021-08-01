@@ -30,5 +30,10 @@ const GenerateLevelSelectorComponents = () => {
 };
 
 export default () => {
-  return <div className="world-map">{GenerateLevelSelectorComponents()}</div>;
+  return (
+    <div className="world-map-container">
+      <div className="world-map">{GenerateLevelSelectorComponents()}</div>
+      <div></div>
+    </div>
+  );
 };
