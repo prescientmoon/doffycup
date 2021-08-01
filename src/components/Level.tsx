@@ -6,8 +6,14 @@ import { CanvasRenderer } from "../logic/animation";
 import { InterpreterSnapshot, interpretProgram } from "../logic/interpret";
 import { useStream } from "../types/Stream";
 import "../styles/level.css";
+import { ADT } from "ts-adt";
 
 const minimumHighlightTime = 400;
+
+type LevelState = ADT<{
+  executing: {};
+  waiting: { prompt: string };
+}>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
   const [interpreterSnapshot, setInterpreterSnapshot] =
@@ -19,10 +25,17 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const currentProgram = currentLevel.sections[currentSection].program;
 
+  const [currentState, setCurrentState] = useState<LevelState>({
+    _type: "waiting",
+    prompt: "Waiting for execution to start",
+  });
+
   const interpreterState = useRef(
     interpretProgram(currentProgram, {
       path: [],
-      cups: [true, false, false, false, false, false, false],
+      cups: Array(currentLevel.cups)
+        .fill(1)
+        .map((_, index) => index === currentLevel.startingBall),
     })
   );
 
@@ -34,7 +47,10 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     };
 
     const snapshot = interpreterState.current.next();
-    if (snapshot.done) return setInterpreterSnapshot(null);
+    if (snapshot.done) {
+      setCurrentState({ _type: "waiting", prompt: "Where is the ball?" });
+      return setInterpreterSnapshot(null);
+    }
 
     const [, snapshotBlock] = snapshot.value;
 
@@ -65,11 +81,13 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
       renderer.current.context = context;
 
-      renderer.current.freshCups(7);
+      renderer.current.freshCups(currentLevel.cups);
 
       renderer.current.resize();
       renderer.current.render();
+
       forwardEvaluation();
+      setCurrentState({ _type: "executing" });
     }
   }, []);
 
@@ -87,6 +105,11 @@ export default ({ levelNumber }: { levelNumber: number }) => {
         </div>
         <div className="level__right">
           <canvas width="1000" height="1000" ref={canvasRef} />
+          {currentState._type === "waiting" && (
+            <div className="level__prompt">
+              <div className="level__prompt-text">{currentState.prompt}</div>
+            </div>
+          )}
         </div>
       </div>
     </>
