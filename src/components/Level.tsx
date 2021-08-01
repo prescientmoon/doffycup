@@ -21,10 +21,7 @@ type LevelState = ADT<{
     solution: ExecutionState["cups"];
   };
   success: {
-    prompt: string;
-  };
-  failure: {
-    prompt: string;
+    prompt: ComponentChildren;
   };
   executing: {};
   waiting: {};
@@ -246,8 +243,11 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                 ) {
                   setCurrentState({
                     _type: "success",
-                    prompt:
-                      "Congratulations! You can now replay this level on any animation speed!",
+                    prompt: (
+                      <span className="level__success-prompt">
+                        Congratulations!
+                      </span>
+                    ),
                   });
 
                   renderer.current.shouldRenderBalls = true;
