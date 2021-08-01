@@ -2,8 +2,9 @@ import { Level, Program } from "src/types/Program";
 export const levelsList: Level[] = [
   {
     cups: 4,
-    startingBall: 2,
-
+    startingBalls: {
+      orange: 3,
+    },
     sections: [
       {
         hidden: true,
@@ -12,6 +13,23 @@ export const levelsList: Level[] = [
             _type: "repeat",
             times: 1,
             program: [
+              {
+                _type: "ifContainsBall",
+                ballColor: "cyan",
+                then: [
+                  {
+                    _type: "swap",
+                    cups: [1, 3],
+                  },
+                ],
+                otherwise: [
+                  {
+                    _type: "swap",
+                    cups: [2, 3],
+                  },
+                ],
+                target: 1,
+              },
               {
                 _type: "swap",
                 cups: [0, 3],

@@ -36,5 +36,9 @@ export function* interpretBlock(
       for (let step = 0; step < block.times; step++)
         yield* interpretProgram(block.program, state);
       break;
+    case "ifContainsBall":
+      if (state.cups[block.target] === block.ballColor)
+        yield* interpretProgram(block.then, state);
+      else yield* interpretProgram(block.otherwise, state);
   }
 }

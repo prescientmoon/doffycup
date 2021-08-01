@@ -12,6 +12,11 @@ interface CodeBlockProps {
   highlighted: CodeBlockPath | null;
 }
 
+interface ElseContinuationProps {
+  block: Block & { _type: "ifContainsBall" };
+  highlighted: CodeBlockPath | null;
+}
+
 interface ProgramProps {
   program: Program;
   highlighted: CodeBlockPath | null;
@@ -23,6 +28,8 @@ const blockColor = (block: Block): BlockColor => {
       return "orange";
     case "swap":
       return "blue";
+    case "ifContainsBall":
+      return "green";
   }
 };
 
@@ -30,6 +37,8 @@ const blockChildren = (block: Block): Program => {
   switch (block._type) {
     case "repeat":
       return block.program;
+    case "ifContainsBall":
+      return block.then;
     case "swap":
       return [];
   }
@@ -47,6 +56,16 @@ const CodeBlockHead = (props: { block: Block }) => {
           Repeat
           <CodeBlockHighlight>{props.block.times}</CodeBlockHighlight>
           times
+        </>
+      );
+    case "ifContainsBall":
+      return (
+        <>
+          If <CodeBlockHighlight>{props.block.target}</CodeBlockHighlight>
+          contains
+          <span
+            className={`code-block__colored-ball code-block__colored-ball--${props.block.ballColor}`}
+          />
         </>
       );
     case "swap":
@@ -76,6 +95,24 @@ export const ProgramBlock = (props: ProgramProps) => {
   );
 };
 
+const ElseContinution = (props: ElseContinuationProps) => {
+  return (
+    <>
+      <div className="code-block__title">Else</div>
+      <div className="code-block__children">
+        <ProgramBlock
+          program={props.block.otherwise}
+          highlighted={
+            props.highlighted?.map((e, i) =>
+              i === 0 ? e - props.block.then.length : e
+            ) ?? null
+          }
+        />
+      </div>
+    </>
+  );
+};
+
 export const CodeBlock = (props: CodeBlockProps) => {
   return (
     <div
@@ -94,6 +131,13 @@ export const CodeBlock = (props: CodeBlockProps) => {
           program={blockChildren(props.block)}
         />
       </div>
+      {props.block._type === "ifContainsBall" &&
+        props.block.otherwise.length !== 0 && (
+          <ElseContinution
+            highlighted={props.highlighted}
+            block={props.block}
+          />
+        )}
     </div>
   );
 };

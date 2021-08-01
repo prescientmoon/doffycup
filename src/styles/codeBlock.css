@@ -1,6 +1,7 @@
 .code-block {
   padding: var(--spacing);
   display: inline-block;
+  padding-bottom: 0;
   text-align: right;
   color: white;
   border: 1px solid black;
@@ -17,7 +18,10 @@
 
 .code-block > .code-block__title {
   width: 100%;
+  display: flex;
+  align-items: center;
   text-align: left;
+  margin-bottom: var(--spacing);
 }
 
 .code-block.code-block--highlighted {
@@ -35,22 +39,38 @@
   background: var(--cyan);
 }
 
-.code-block > .code-block__children > .code-block:first-child {
-  margin-top: var(--spacing);
+.code-block > .code-block__children > .code-block:last-child {
+  margin-bottom: var(--spacing);
 }
 
-.code-block.code-block--orange {
+.code-block > .code-block__title > .code-block__colored-ball {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+
+  display: inline-block;
+  border-radius: 2rem;
+
+  padding: 1rem;
+
+  border: 3px solid black;
+}
+
+.code-block.code-block--orange,
+.code-block__colored-ball--orange {
   background: var(--orange);
 }
 
-.code-block.code-block--blue {
+.code-block.code-block--blue,
+.code-block__colored-ball--blue {
   background: var(--blue);
 }
 
-.code-block.code-block--cyan {
+.code-block.code-block--cyan,
+.code-block__colored-ball--cyan {
   background: var(--cyan);
 }
 
-.code-block.code-block--green {
+.code-block.code-block--green,
+.code-block__colored-ball--green {
   background: var(--green);
 }

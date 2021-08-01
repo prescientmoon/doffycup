@@ -11,7 +11,7 @@ export interface LevelSection {
 export type Level = {
   cups: number;
   sections: Array<LevelSection>;
-  startingBall: number;
+  startingBalls: Partial<Record<BlockColor, number>>;
 };
 
 export type Program = Block[];
@@ -28,6 +28,12 @@ export type Block =
         times: number;
         program: Program;
       };
+      ifContainsBall: {
+        target: number;
+        ballColor: BlockColor;
+        then: Program;
+        otherwise: Program;
+      };
     }>
   | FlatBlock;
 
@@ -35,7 +41,7 @@ export type CodeBlockPath = number[];
 
 // ========== Program execution stuff
 export type ExecutionState = {
-  cups: Array<boolean>;
+  cups: Array<BlockColor | null>;
   path: CodeBlockPath;
 };
 

@@ -8,6 +8,7 @@ import { useStream } from "../types/Stream";
 import "../styles/level.css";
 import { ADT } from "ts-adt";
 import { Vec2Like } from "@thi.ng/vectors";
+import { BlockColor } from "src/types/Program";
 
 const minimumHighlightTime = 400;
 
@@ -37,7 +38,14 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       path: [],
       cups: Array(currentLevel.cups)
         .fill(1)
-        .map((_, index) => index === currentLevel.startingBall),
+        .map((_, index) => {
+          for (let color in currentLevel.startingBalls) {
+            if (currentLevel.startingBalls[color as BlockColor] === index)
+              return color as BlockColor;
+          }
+
+          return null;
+        }),
     })
   );
 
@@ -59,6 +67,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     setInterpreterSnapshot(snapshot.value);
 
     switch (snapshotBlock._type) {
+      case "ifContainsBall":
       case "repeat":
         waitAndContinue();
         break;
