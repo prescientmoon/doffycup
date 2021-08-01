@@ -137,3 +137,7 @@
 
   border: 3px solid black;
 }
+
+.playbackSpeedInputDisabled {
+  display: none;
+}

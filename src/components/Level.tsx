@@ -10,6 +10,7 @@ import { ADT } from "ts-adt";
 import { Vec2Like } from "@thi.ng/vectors";
 import { BlockColor } from "src/types/Program";
 import { ComponentChildren } from "preact";
+import { useAppState } from "../logic/state";
 
 const minimumHighlightTime = 700;
 
@@ -22,6 +23,7 @@ type LevelState = ADT<{
 }>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
+  const [globalState, setGlobalState] = useAppState();
   const [interpreterSnapshot, setInterpreterSnapshot] =
     useState<null | InterpreterSnapshot>(null);
   const renderer = useRef<CanvasRenderer>(new CanvasRenderer(null));
@@ -236,7 +238,11 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                 Play: x{playbackSpeed}
               </div>
               <input
-                className="playbackSpeedInput"
+                className={`playbackSpeedInput ${
+                  levelNumber == globalState.completed - 1
+                    ? "playbackSpeedInputDisabled"
+                    : ""
+                }`}
                 type="range"
                 min="1"
                 max="5"
