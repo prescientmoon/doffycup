@@ -11,6 +11,7 @@ import { Vec2Like } from "@thi.ng/vectors";
 import { BlockColor, ExecutionState } from "src/types/Program";
 import { ComponentChildren } from "preact";
 import { useAppState } from "../logic/state";
+import { route } from "preact-router";
 
 const minimumHighlightTime = 700;
 
@@ -34,13 +35,18 @@ type LevelState = ADT<{
 }>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
-  const [globalState] = useAppState();
+  const [globalState, setGlobalState] = useAppState();
+  if (levelNumber > globalState.completed) {
+    route("/levels", true);
+  }
+
   const [interpreterSnapshot, setInterpreterSnapshot] =
     useState<null | InterpreterSnapshot>(null);
   const renderer = useRef<CanvasRenderer>(new CanvasRenderer(null));
-  const currentLevel = levelsList[levelNumber];
 
-  const currentProgram = currentLevel.program;
+  const currentLevel = levelsList[levelNumber] || levelsList[0];
+
+  const currentProgram = currentLevel.program || null;
   const [lastMousePosition, setMousePosition] = useState<Vec2Like | null>(null);
   const [appState, setAppState] = useAppState();
 
@@ -53,7 +59,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   const cups = Array(currentLevel.cups)
     .fill(1)
     .map((_, index) => {
-      for (let color in currentLevel.startingBalls) {
+      for (let color in currentLevel?.startingBalls) {
         if (currentLevel.startingBalls[color as BlockColor] === index)
           return color as BlockColor;
       }
@@ -295,13 +301,12 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                     : ""
                 }`}
                 onClick={() => {
+                  renderer.current.animationSpeed = playbackSpeed;
                   if (currentState._type !== "waiting") {
                     renderer.current.forceAnimationFinish();
                     renderer.current.shouldRenderBalls = true;
                     renderer.current.freshCups(currentLevel.cups, cups);
                   }
-
-                  renderer.current.animationSpeed = playbackSpeed;
 
                   if (currentState._type === "waiting") {
                     setCurrentState({
@@ -316,7 +321,8 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                   }
                 }}
               >
-                Play: x{playbackSpeed}
+                Play: x
+                {levelNumber == globalState.completed ? 10 : playbackSpeed}
               </div>
               <input
                 className={`playbackSpeedInput ${
