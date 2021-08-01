@@ -2,7 +2,9 @@ import { Level, Program } from "src/types/Program";
 export const levelsList: Level[] = [
   {
     cups: 2,
-    startingBall: 2,
+    startingBalls: {
+      orange: 2,
+    },
 
     sections: [
       {
@@ -35,7 +37,9 @@ export const levelsList: Level[] = [
   },
   {
     cups: 3,
-    startingBall: 2,
+    startingBalls: {
+      orange: 2,
+    },
 
     sections: [
       {
@@ -84,7 +88,9 @@ export const levelsList: Level[] = [
   },
   {
     cups: 3,
-    startingBall: 2,
+    startingBalls: {
+      orange: 2,
+    },
 
     sections: [
       {
