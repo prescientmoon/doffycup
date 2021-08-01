@@ -17,7 +17,7 @@
 }
 
 .level > .level__left > .level__left-script-container {
-  margin: 0 20px 0 0;
+  margin: 0 50px 0 0;
   height: 75%;
 }
 
@@ -36,7 +36,7 @@
 }
 
 .level > .level__left {
-  padding: 15px;
+  padding: 20px;
   padding-top: 40px;
   box-sizing: border-box;
   background: var(--primary);
