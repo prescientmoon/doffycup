@@ -12,7 +12,7 @@ import cupTextureUrl from "../assets/cup.png";
 const cupTexture = new Image(343, 400);
 cupTexture.src = cupTextureUrl;
 
-export const cupSize = [cupTexture.width / 3, cupTexture.height / 3] as const;
+export const cupSize = [cupTexture.width, cupTexture.height] as const;
 export const cupSpacing = 20;
 
 // ========== Implementation
