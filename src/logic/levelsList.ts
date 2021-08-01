@@ -67,6 +67,53 @@ export const levelsList: Level[] = [
     question: "orange",
   },
   {
+    cups: 2,
+    startingBalls: {
+      orange: 1,
+    },
+    question: "orange",
+    program: [
+      {
+        _type: "ifContainsBall",
+        ballColor: "orange",
+        otherwise: [],
+        target: 1,
+        then: [
+          {
+            _type: "swap",
+            cups: [0, 1],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    cups: 3,
+    startingBalls: {
+      orange: 1,
+    },
+    question: "orange",
+    program: [
+      {
+        _type: "ifContainsBall",
+        ballColor: "orange",
+        otherwise: [
+          {
+            _type: "swap",
+            cups: [1, 2],
+          },
+        ],
+        target: 0,
+        then: [
+          {
+            _type: "swap",
+            cups: [0, 1],
+          },
+        ],
+      },
+    ],
+  },
+  {
     cups: 3,
     startingBalls: {
       orange: 1,
@@ -175,6 +222,27 @@ export const levelsList: Level[] = [
       },
     ],
     question: "blue",
+  },
+
+  {
+    cups: 2,
+    startingBalls: {
+      cyan: 1,
+    },
+
+    program: [
+      {
+        _type: "repeat",
+        times: 3,
+        program: [
+          {
+            _type: "swap",
+            cups: [0, 1],
+          },
+        ],
+      },
+    ],
+    question: "cyan",
   },
   {
     cups: 3,

@@ -230,7 +230,7 @@ export class CanvasRenderer {
   private renderAnimationState() {
     if (!this.context) return;
 
-    const cups: Vec2Like[] = [];
+    const cups: { position: Vec2Like; index: number }[] = [];
 
     for (let index = 0; index < this.animationState.cups.length; index++) {
       const cup = this.animationState.cups[index];
@@ -247,18 +247,31 @@ export class CanvasRenderer {
 
       if (cup.isLifted) y -= 40;
 
-      cups.push([cup.position[0], y]);
+      cups.push({ position: [cup.position[0], y], index });
     }
 
-    cups.sort((a, b) => a[1] - b[1]);
+    cups.sort((a, b) => a.position[1] - b.position[1]);
 
-    for (const position of cups) {
+    for (const { position, index } of cups) {
       this.context.drawImage(
         cupTexture,
         position[0],
         position[1],
         cupSize[0],
         cupSize[1]
+      );
+
+      const label = Object.values(this.cupOrigins).indexOf(index) + 1;
+
+      if (label === 0) continue;
+
+      this.context.fillStyle = "black";
+      this.context.font = "100px Roboto mono";
+      this.context.textAlign = "center";
+      this.context.fillText(
+        String(label),
+        position[0] + cupSize[0] / 2,
+        position[1] - 20
       );
     }
   }
