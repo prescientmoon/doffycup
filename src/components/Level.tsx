@@ -10,7 +10,7 @@ import { ADT } from "ts-adt";
 import { Vec2Like } from "@thi.ng/vectors";
 import { BlockColor } from "src/types/Program";
 
-const minimumHighlightTime = 400;
+const minimumHighlightTime = 700;
 
 type LevelState = ADT<{
   executing: {};
