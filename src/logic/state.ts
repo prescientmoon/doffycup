@@ -47,7 +47,7 @@ function loadState(): AppState {
   const parsedSavedState = savedState === null ? {} : JSON.parse(savedState);
 
   return {
-    completed: 10,
+    completed: 0,
     ...parsedSavedState,
   };
 }

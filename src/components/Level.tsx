@@ -82,7 +82,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
         _type: "waitingForAnswer",
         prompt: (
           <>
-            Where is the{" "}
+            Where is{" "}
             <span
               className={`level__prompt-ball level__prompt-ball--${currentLevel.question}`}
             />{" "}
@@ -243,7 +243,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                   }
                 }}
               >
-                Play Animation: x{playbackSpeed}
+                Play: x{playbackSpeed}
               </div>
               <input
                 className="playbackSpeedInput"
