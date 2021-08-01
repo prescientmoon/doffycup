@@ -40,3 +40,40 @@ body {
   --green: #5fcf9c;
   --cyan: #5ac9ca;
 }
+
+input[type="range"] {
+  height: 10px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+}
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  height: 30px;
+  width: 30px;
+  border-radius: 50px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000;
+  border: 0px solid #000000;
+  height: 35px;
+  width: 35px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 1px #000000;
+  background: #3071a9;
+  border-radius: 15px;
+  border: 1px solid #000000;
+}
