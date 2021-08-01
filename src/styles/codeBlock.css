@@ -37,6 +37,8 @@
 
   padding: 0.3rem;
   background: var(--cyan);
+
+  border: 1px solid black;
 }
 
 .code-block > .code-block__children > .code-block:last-child {
