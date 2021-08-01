@@ -244,7 +244,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                   setCurrentState({
                     _type: "success",
                     prompt:
-                      "Congratulations! You can now replay this level on any animation speed or move to the next level",
+                      "Congratulations! You can now replay this level on any animation speed!",
                   });
 
                   renderer.current.shouldRenderBalls = true;
@@ -255,7 +255,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                   if (!levelCompleted) {
                     setAppState({
                       _type: "completeLevel",
-                      level: levelNumber + 1,
+                      level: Number(levelNumber) + 1,
                     });
                   }
                 } else {
