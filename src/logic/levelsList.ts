@@ -3,7 +3,7 @@ export const levelsList: Level[] = [
   {
     cups: 2,
     startingBalls: {
-      orange: 2,
+      orange: 1,
     },
 
     sections: [
