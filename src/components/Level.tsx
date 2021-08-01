@@ -37,7 +37,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   const [lastMousePosition, setMousePosition] = useState<Vec2Like | null>(null);
   const [appState, setAppState] = useAppState();
 
-  const levelCompleted = appState.completed == levelNumber;
+  const levelCompleted = appState.completed > levelNumber;
 
   const [currentState, setCurrentState] = useState<LevelState>({
     _type: "waiting",
@@ -54,9 +54,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       return null;
     });
 
-  const [playbackSpeed, setPlaybackSpeed] = useState(
-    levelNumber == globalState.completed ? 20 : 1
-  );
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
   const initialExecutionState = {
     path: [],
@@ -71,7 +69,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   const execute = () => {
     if (!levelCompleted) {
-      renderer.current.animationSpeed = 20;
+      renderer.current.animationSpeed = 10;
     }
 
     setCurrentState({
