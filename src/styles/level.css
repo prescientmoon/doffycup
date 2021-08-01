@@ -27,6 +27,11 @@
   background: var(--secondary);
 }
 
+.level > .level__right > canvas {
+  width: 100%;
+  display: inline;
+}
+
 .level > .level__left {
   padding: 15px;
   padding-top: 40px;

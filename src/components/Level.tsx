@@ -81,6 +81,8 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     ) {
       const context = canvasRef.current?.getContext("2d")!;
 
+      context.imageSmoothingEnabled = false;
+
       renderer.current.context = context;
 
       renderer.current.freshCups(currentLevel.cups);
