@@ -189,20 +189,20 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             </div>
           )}
           {
-            <div
-              className="playAnimationButtonContainer"
-              onClick={() => {
-                if (currentState._type === "waiting") {
-                  renderer.current.animationSpeed = playbackSpeed;
-                  setCurrentState({
-                    _type: "waitinForLiftDown",
-                  });
+            <div className="playAnimationButtonContainer">
+              <div
+                className="playAnimationButton"
+                onClick={() => {
+                  if (currentState._type === "waiting") {
+                    renderer.current.animationSpeed = playbackSpeed;
+                    setCurrentState({
+                      _type: "waitinForLiftDown",
+                    });
 
-                  renderer.current.unliftAll();
-                }
-              }}
-            >
-              <div className="playAnimationButton">
+                    renderer.current.unliftAll();
+                  }
+                }}
+              >
                 Play Animation: x{playbackSpeed}
               </div>
               <input
