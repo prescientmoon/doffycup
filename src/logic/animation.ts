@@ -36,7 +36,7 @@ const blockToAnimation = (
         steps: [
           {
             length: 400,
-            amount: [0, -cupSize[1] - cupSpacing],
+            amount: [0, -cupSize[1] / 2 - cupSpacing],
           },
           {
             length: minAdinmationLength,
@@ -47,7 +47,7 @@ const blockToAnimation = (
           },
           {
             length: 400,
-            amount: [0, cupSize[1] + cupSpacing],
+            amount: [0, cupSize[1] / 2 + cupSpacing],
           },
         ],
         startedOn: block.cups[0],
@@ -83,12 +83,7 @@ const cupDefaultPosition = (nth: number) => {
 export class CanvasRenderer {
   private handlerId: null | number = null;
   public animationState: AnimationState = {
-    cups: [
-      {
-        position: [100, 100],
-        beforeAnimation: [100, 100],
-      },
-    ],
+    cups: [],
     hovered: null,
   };
 
@@ -123,6 +118,7 @@ export class CanvasRenderer {
         return {
           position,
           beforeAnimation: position,
+          isLifted: false,
         };
       });
 
@@ -220,24 +216,40 @@ export class CanvasRenderer {
   private renderAnimationState() {
     if (!this.context) return;
 
+    const cups: Vec2Like[] = [];
+
     for (let index = 0; index < this.animationState.cups.length; index++) {
       const cup = this.animationState.cups[index];
 
       if (cup === null) continue;
 
+      let y = cup.position[1];
+
+      if (
+        this.animationState.hovered! ===
+        Object.values(this.cupOrigins).indexOf(index)
+      )
+        y -= 20;
+
+      if (cup.isLifted) y -= 40;
+
+      cups.push([cup.position[0], y]);
+    }
+
+    cups.sort((a, b) => a[1] - b[1]);
+
+    for (const position of cups) {
       this.context.drawImage(
         cupTexture,
-        cup.position[0],
-        cup.position[1] -
-          (this.animationState.hovered! ===
-          Object.values(this.cupOrigins).indexOf(index)
-            ? 20
-            : 0),
+        position[0],
+        position[1],
         cupSize[0],
         cupSize[1]
       );
     }
   }
+
+  public liftCup(index: number) {}
 
   public render() {
     this.update();

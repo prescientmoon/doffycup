@@ -115,7 +115,6 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       lastMousePosition[1] < cupSpacing + cupSize[1] ||
       lastMousePosition[1] > 3 * cupSpacing + 2 * cupSize[1]
     ) {
-      console.log(lastMousePosition);
       renderer.current.context?.fillRect(
         lastMousePosition[0],
         lastMousePosition[1],
