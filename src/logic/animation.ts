@@ -140,7 +140,7 @@ export class CanvasRenderer {
       .map((_, index) => index);
   }
 
-  private forceAnimationFinish() {
+  public forceAnimationFinish() {
     for (const animation of this.animationsInProgress) {
       for (
         let stepIndex = animation.step;

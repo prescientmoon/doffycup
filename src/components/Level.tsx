@@ -17,6 +17,7 @@ type LevelState = ADT<{
   waitingForAnswer: { prompt: string };
   waiting: {};
   waitinForLiftDown: {};
+  waitingForLiftUp: {};
 }>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
@@ -68,8 +69,6 @@ export default ({ levelNumber }: { levelNumber: number }) => {
         prompt: "Where is the ball?",
       });
 
-      renderer.current.shouldRenderBalls = true;
-
       return setInterpreterSnapshot(null);
     }
 
@@ -92,9 +91,21 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     renderer.current.onAnimationOver,
     () => {
       if (currentState._type === "executing") forwardEvaluation();
+      if (currentState._type === "waitingForLiftUp") {
+        setCurrentState({
+          _type: "waitinForLiftDown",
+        });
+
+        renderer.current.unliftAll();
+      }
       if (currentState._type === "waitinForLiftDown") {
         setCurrentState({
           _type: "executing",
+        });
+
+        interpreterState.current = interpretProgram(currentProgram, {
+          path: [],
+          cups,
         });
 
         renderer.current.shouldRenderBalls = false;
@@ -168,6 +179,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           <canvas
             width="1000"
             height="1000"
+            onClick={() => {}}
             onMouseLeave={() => {
               setMousePosition(null);
             }}
@@ -192,13 +204,23 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             <div
               className="playAnimationButtonContainer"
               onClick={() => {
+                if (currentState._type !== "waiting") {
+                  renderer.current.forceAnimationFinish();
+                  renderer.current.shouldRenderBalls = true;
+                  renderer.current.freshCups(currentLevel.cups, cups);
+                }
+
+                renderer.current.animationSpeed = playbackSpeed;
                 if (currentState._type === "waiting") {
-                  renderer.current.animationSpeed = playbackSpeed;
                   setCurrentState({
                     _type: "waitinForLiftDown",
                   });
-
                   renderer.current.unliftAll();
+                } else {
+                  setCurrentState({
+                    _type: "waitingForLiftUp",
+                  });
+                  renderer.current.liftAll();
                 }
               }}
             >
