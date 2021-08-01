@@ -11,7 +11,7 @@ export function* interpretProgram(
   program: Program,
   state: ExecutionState,
   offset = 0
-): Generator<InterpreterSnapshot> {
+): Generator<InterpreterSnapshot, ExecutionState["cups"]> {
   for (let index = 0; index < program.length; index++) {
     const step = program[index];
 
@@ -19,12 +19,14 @@ export function* interpretProgram(
     yield* interpretBlock(step, state);
     state.path.pop();
   }
+
+  return state.cups;
 }
 
 export function* interpretBlock(
   block: Block,
   state: ExecutionState
-): Generator<[CodeBlockPath, Block]> {
+): Generator<[CodeBlockPath, Block], ExecutionState["cups"]> {
   yield [state.path, block];
 
   switch (block._type) {
@@ -32,6 +34,7 @@ export function* interpretBlock(
       const temp = state.cups[block.cups[0]];
       state.cups[block.cups[0]] = state.cups[block.cups[1]];
       state.cups[block.cups[1]] = temp;
+
       break;
     case "repeat":
       for (let step = 0; step < block.times; step++)
@@ -42,4 +45,6 @@ export function* interpretBlock(
         yield* interpretProgram(block.then, state);
       else yield* interpretProgram(block.otherwise, state, block.then.length);
   }
+
+  return state.cups;
 }

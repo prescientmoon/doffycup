@@ -8,14 +8,17 @@ import { useStream } from "../types/Stream";
 import "../styles/level.css";
 import { ADT } from "ts-adt";
 import { Vec2Like } from "@thi.ng/vectors";
-import { BlockColor } from "src/types/Program";
+import { BlockColor, ExecutionState } from "src/types/Program";
 import { ComponentChildren } from "preact";
 import { useAppState } from "../logic/state";
 
 const minimumHighlightTime = 700;
 
 type LevelState = ADT<{
-  waitingForAnswer: { prompt: ComponentChildren };
+  waitingForAnswer: {
+    prompt: ComponentChildren;
+    solution: ExecutionState["cups"];
+  };
   executing: {};
   waiting: {};
   waitinForLiftDown: {};
@@ -52,11 +55,13 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
+  const initialExecutionState = {
+    path: [],
+    cups: [...cups],
+  };
+
   const interpreterState = useRef(
-    interpretProgram(currentProgram, {
-      path: [],
-      cups,
-    })
+    interpretProgram(currentProgram, initialExecutionState)
   );
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -80,6 +85,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     if (snapshot.done) {
       setCurrentState({
         _type: "waitingForAnswer",
+        solution: snapshot.value,
         prompt: (
           <>
             Where is{" "}
@@ -197,7 +203,18 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           <canvas
             width="1000"
             height="1000"
-            onClick={() => {}}
+            onClick={() => {
+              if (currentState._type === "waitingForAnswer") {
+                if (renderer.current.animationState.hovered === null) return;
+
+                if (
+                  currentState.solution[
+                    renderer.current.animationState.hovered
+                  ] === currentLevel.question
+                )
+                  console.log("won");
+              }
+            }}
             onMouseLeave={() => {
               setMousePosition(null);
             }}
