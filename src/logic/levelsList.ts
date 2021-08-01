@@ -10,7 +10,7 @@ export const levelsList: Level[] = [
         program: [
           {
             _type: "repeat",
-            times: 4,
+            times: 1,
             program: [
               {
                 _type: "swap",

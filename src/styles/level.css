@@ -22,6 +22,7 @@
 }
 
 .level > .level__right {
+  position: relative;
   width: 100%;
   background: var(--secondary);
 }
@@ -30,4 +31,20 @@
   padding: 2rem;
   box-sizing: border-box;
   background: var(--primary);
+}
+
+.level > .level__right > .level__prompt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 33%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.level > .level__right > .level__prompt > .level__prompt-text {
+  font-size: 3rem;
 }
