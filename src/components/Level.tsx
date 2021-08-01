@@ -19,18 +19,25 @@ type LevelState = ADT<{
     prompt: ComponentChildren;
     solution: ExecutionState["cups"];
   };
+  success: {
+    prompt: string;
+  };
+  failure: {
+    prompt: string;
+  };
   executing: {};
   waiting: {};
   waitinForLiftDown: {};
+  waitinForSingleLiftDown: { index: number; solution: ExecutionState["cups"] };
   waitingForLiftUp: {};
+  waitinForSingleLiftUp: { index: number; solution: ExecutionState["cups"] };
 }>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
-  const [globalState, setGlobalState] = useAppState();
+  const [globalState] = useAppState();
   const [interpreterSnapshot, setInterpreterSnapshot] =
     useState<null | InterpreterSnapshot>(null);
   const renderer = useRef<CanvasRenderer>(new CanvasRenderer(null));
-
   const currentLevel = levelsList[levelNumber];
 
   const currentProgram = currentLevel.program;
@@ -77,6 +84,22 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     });
   };
 
+  const askForUserGuess = (solution: ExecutionState["cups"]) => {
+    setCurrentState({
+      _type: "waitingForAnswer",
+      solution,
+      prompt: (
+        <>
+          Where is{" "}
+          <span
+            className={`level__prompt-ball level__prompt-ball--${currentLevel.question}`}
+          />{" "}
+          ?
+        </>
+      ),
+    });
+  };
+
   const forwardEvaluation = useCallback(() => {
     const waitAndContinue = () => {
       setTimeout(forwardEvaluation, minimumHighlightTime / playbackSpeed);
@@ -84,19 +107,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
     const snapshot = interpreterState.current.next();
     if (snapshot.done) {
-      setCurrentState({
-        _type: "waitingForAnswer",
-        solution: snapshot.value,
-        prompt: (
-          <>
-            Where is{" "}
-            <span
-              className={`level__prompt-ball level__prompt-ball--${currentLevel.question}`}
-            />{" "}
-            ?
-          </>
-        ),
-      });
+      askForUserGuess(snapshot.value);
 
       return setInterpreterSnapshot(null);
     }
@@ -119,6 +130,17 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   useStream(
     renderer.current.onAnimationOver,
     () => {
+      if (currentState._type === "waitinForSingleLiftUp") {
+        setCurrentState({
+          _type: "waitinForSingleLiftDown",
+          index: currentState.index,
+          solution: currentState.solution,
+        });
+        renderer.current.unliftCup(currentState.index);
+      }
+      if (currentState._type === "waitinForSingleLiftDown") {
+        askForUserGuess(currentState.solution);
+      }
       if (currentState._type === "executing") forwardEvaluation();
       if (currentState._type === "waitingForLiftUp") {
         setCurrentState({
@@ -212,8 +234,28 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                   currentState.solution[
                     renderer.current.animationState.hovered
                   ] === currentLevel.question
-                )
-                  console.log("won");
+                ) {
+                  setCurrentState({
+                    _type: "success",
+                    prompt:
+                      "Congratulations! You can now replay this level on any animation speed or move to the next level",
+                  });
+
+                  renderer.current.shouldRenderBalls = true;
+                  renderer.current.liftCup(
+                    renderer.current.animationState.hovered
+                  );
+                } else {
+                  renderer.current.liftCup(
+                    renderer.current.animationState.hovered
+                  );
+
+                  setCurrentState({
+                    _type: "waitinForSingleLiftUp",
+                    index: renderer.current.animationState.hovered,
+                    solution: currentState.solution,
+                  });
+                }
               }
             }}
             onMouseLeave={() => {
@@ -231,7 +273,8 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             }}
             ref={canvasRef}
           />
-          {currentState._type === "waitingForAnswer" && (
+          {(currentState._type === "success" ||
+            currentState._type === "waitingForAnswer") && (
             <div className="level__prompt">
               <div className="level__prompt-text">{currentState.prompt}</div>
             </div>
