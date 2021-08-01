@@ -73,6 +73,14 @@
 
   width: 500px;
   height: 30px;
+
+  transition: 250ms;
+}
+
+.playAnimationButtonContainer:hover {
+  cursor: pointer;
+  background: var(--tertiary);
+  transition: 250ms;
 }
 
 .playbackSpeedInput {
