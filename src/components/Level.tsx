@@ -58,7 +58,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   const forwardEvaluation = useCallback(() => {
     const waitAndContinue = () => {
-      setTimeout(forwardEvaluation, minimumHighlightTime * playbackSpeed);
+      setTimeout(forwardEvaluation, minimumHighlightTime / playbackSpeed);
     };
 
     const snapshot = interpreterState.current.next();
@@ -67,6 +67,9 @@ export default ({ levelNumber }: { levelNumber: number }) => {
         _type: "waitingForAnswer",
         prompt: "Where is the ball?",
       });
+
+      renderer.current.shouldRenderBalls = true;
+
       return setInterpreterSnapshot(null);
     }
 
@@ -212,7 +215,6 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                 onChange={(e) => {
                   const target = e.target as HTMLInputElement;
                   setPlaybackSpeed(Number(target.value));
-                  console.log(target.value);
                 }}
               />
             </div>
