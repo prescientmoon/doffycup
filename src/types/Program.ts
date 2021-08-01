@@ -73,6 +73,7 @@ export type AnimationState = {
     position: Vec2Like;
     beforeAnimation: Vec2Like;
     isLifted: boolean;
+    ball: BlockColor | null;
   }>;
   hovered: number | null;
 };

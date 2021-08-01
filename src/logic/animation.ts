@@ -2,6 +2,7 @@ import { add2, Vec2Like } from "@thi.ng/vectors";
 import {
   AnimationQueues as AnimationQueue,
   AnimationState,
+  BlockColor,
   FlatBlock,
 } from "src/types/Program";
 import * as Stream from "../types/Stream";
@@ -14,6 +15,14 @@ cupTexture.src = cupTextureUrl;
 
 export const cupSize = [cupTexture.width, cupTexture.height] as const;
 export const cupSpacing = 20;
+export const liftAmount = 200;
+export const ballRadius = 100;
+export const blockColors: Record<BlockColor, string> = {
+  blue: " #2e82f7",
+  orange: "#dfa94d",
+  green: "#5fcf9c",
+  cyan: "#5ac9ca",
+};
 
 // ========== Implementation
 const blockToAnimation = (
@@ -93,6 +102,8 @@ export class CanvasRenderer {
   public onAnimationOver: Stream.Stream<void>;
   private emitOnAnimationOver: () => void;
 
+  public shouldRenderBalls = false;
+
   public constructor(public context: CanvasRenderingContext2D | null) {
     const animationOver = Stream.create<void>();
 
@@ -109,7 +120,7 @@ export class CanvasRenderer {
     this.context.canvas.height = 4 * cupSpacing + 3 * cupSize[1];
   }
 
-  public freshCups(count: number) {
+  public freshCups(count: number, balls: Array<null | BlockColor>) {
     this.animationState.cups = Array(count)
       .fill(1)
       .map((_, index) => {
@@ -119,6 +130,7 @@ export class CanvasRenderer {
           position,
           beforeAnimation: position,
           isLifted: false,
+          ball: balls[index],
         };
       });
 
@@ -249,7 +261,52 @@ export class CanvasRenderer {
     }
   }
 
-  public liftCup(index: number) {}
+  public liftCup(index: number) {
+    this.animationsInProgress.push({
+      cup: this.cupOrigins[index],
+      startedOn: index,
+      endsOn: index,
+      startedAt: performance.now(),
+      step: 0,
+      steps: [
+        {
+          amount: [0, -liftAmount],
+          length: 400,
+        },
+      ],
+    });
+  }
+
+  public liftAll() {
+    //this.forceAnimationFinish();
+    for (let i = 0; i < this.animationState.cups.length; i++) this.liftCup(i);
+  }
+
+  private renderBalls() {
+    if (!this.context || !this.shouldRenderBalls) return;
+
+    const ballY = 2 * cupSize[1] + cupSpacing - ballRadius;
+    this.context.lineWidth = 16;
+
+    for (let i = 0; i < this.animationState.cups.length; i++) {
+      const cup = this.animationState.cups[i];
+
+      if (!cup.ball) continue;
+
+      this.context.fillStyle = blockColors[cup.ball];
+
+      this.context.beginPath();
+      this.context.arc(
+        cup.position[0] + cupSize[0] / 2,
+        ballY,
+        ballRadius,
+        0,
+        2 * Math.PI
+      );
+      this.context.fill();
+      this.context.stroke();
+    }
+  }
 
   public render() {
     this.update();
@@ -257,6 +314,7 @@ export class CanvasRenderer {
     if (this.context) {
       this.context.clearRect(0, 0, 10000, 10000);
       0;
+      this.renderBalls();
       this.renderAnimationState();
     }
 

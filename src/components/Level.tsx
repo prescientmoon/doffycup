@@ -14,7 +14,8 @@ const minimumHighlightTime = 700;
 
 type LevelState = ADT<{
   executing: {};
-  waiting: { prompt: string };
+  waitingForAnswer: { prompt: string };
+  waiting: {};
 }>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
@@ -30,22 +31,23 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   const [currentState, setCurrentState] = useState<LevelState>({
     _type: "waiting",
-    prompt: "Waiting for execution to start",
   });
+
+  const cups = Array(currentLevel.cups)
+    .fill(1)
+    .map((_, index) => {
+      for (let color in currentLevel.startingBalls) {
+        if (currentLevel.startingBalls[color as BlockColor] === index)
+          return color as BlockColor;
+      }
+
+      return null;
+    });
 
   const interpreterState = useRef(
     interpretProgram(currentProgram, {
       path: [],
-      cups: Array(currentLevel.cups)
-        .fill(1)
-        .map((_, index) => {
-          for (let color in currentLevel.startingBalls) {
-            if (currentLevel.startingBalls[color as BlockColor] === index)
-              return color as BlockColor;
-          }
-
-          return null;
-        }),
+      cups,
     })
   );
 
@@ -58,7 +60,10 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
     const snapshot = interpreterState.current.next();
     if (snapshot.done) {
-      setCurrentState({ _type: "waiting", prompt: "Where is the ball?" });
+      setCurrentState({
+        _type: "waitingForAnswer",
+        prompt: "Where is the ball?",
+      });
       return setInterpreterSnapshot(null);
     }
 
@@ -77,10 +82,13 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     }
   }, [interpreterState, renderer]);
 
-  useStream(renderer.current.onAnimationOver, forwardEvaluation, [
-    interpreterState,
-    renderer,
-  ]);
+  useStream(
+    renderer.current.onAnimationOver,
+    () => {
+      if (currentState._type === "executing") forwardEvaluation();
+    },
+    [interpreterState, renderer]
+  );
 
   // Kickstart rendering
   useEffect(() => {
@@ -94,19 +102,24 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
       renderer.current.context = context;
 
-      renderer.current.freshCups(currentLevel.cups);
+      renderer.current.freshCups(currentLevel.cups, cups);
 
       renderer.current.resize();
       renderer.current.render();
 
-      forwardEvaluation();
-      setCurrentState({ _type: "executing" });
+      renderer.current.shouldRenderBalls = true;
+      renderer.current.liftAll();
+      //      forwardEvaluation();
+      //    setCurrentState({ _type: "executing" });
     }
   }, []);
 
   useEffect(() => {
     const state = renderer.current.animationState;
-    if (lastMousePosition === null || currentState._type !== "waiting") {
+    if (
+      lastMousePosition === null ||
+      currentState._type !== "waitingForAnswer"
+    ) {
       state.hovered = null;
       return;
     }
@@ -115,13 +128,6 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       lastMousePosition[1] < cupSpacing + cupSize[1] ||
       lastMousePosition[1] > 3 * cupSpacing + 2 * cupSize[1]
     ) {
-      renderer.current.context?.fillRect(
-        lastMousePosition[0],
-        lastMousePosition[1],
-        100,
-        100
-      );
-
       state.hovered = null;
       return;
     }
@@ -162,7 +168,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             }}
             ref={canvasRef}
           />
-          {currentState._type === "waiting" && (
+          {currentState._type === "waitingForAnswer" && (
             <div className="level__prompt">
               <div className="level__prompt-text">{currentState.prompt}</div>
             </div>
