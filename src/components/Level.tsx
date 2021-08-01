@@ -1,10 +1,11 @@
-import { CodeBlock, ProgramBlock } from "./CodeBlock";
+import { ProgramBlock } from "./CodeBlock";
 
 import { levelsList } from "../logic/levelsList";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { CanvasRenderer } from "../logic/animation";
 import { InterpreterSnapshot, interpretProgram } from "../logic/interpret";
 import { useStream } from "../types/Stream";
+import "../styles/level.css";
 
 const minimumHighlightTime = 400;
 
@@ -28,9 +29,9 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     };
 
     const snapshot = interpreterState.current.next();
-    if (snapshot.done) return;
+    if (snapshot.done) return setInterpreterSnapshot(null);
 
-    const [snapshotPath, snapshotBlock] = snapshot.value;
+    const [, snapshotBlock] = snapshot.value;
 
     setInterpreterSnapshot(snapshot.value);
 
@@ -58,8 +59,10 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       const context = canvasRef.current?.getContext("2d")!;
 
       renderer.current.context = context;
+
       renderer.current.freshCups(7);
 
+      renderer.current.resize();
       renderer.current.render();
       forwardEvaluation();
     }
@@ -67,13 +70,19 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   return (
     <>
-      <p>Level: {Number(levelNumber) + 1}</p>
-      <div>
-        <ProgramBlock
-          highlighted={interpreterSnapshot?.[0] ?? null}
-          program={levelsList[0]}
-        />
-        <canvas width="1000" height="1000" ref={canvasRef} />
+      <div class="level">
+        <div className="level__left">
+          <p className="level__title">Level: {Number(levelNumber) + 1}</p>
+          <div className="level__left-script-container">
+            <ProgramBlock
+              highlighted={interpreterSnapshot?.[0] ?? null}
+              program={levelsList[0]}
+            />
+          </div>
+        </div>
+        <div className="level__right">
+          <canvas width="1000" height="1000" ref={canvasRef} />
+        </div>
       </div>
     </>
   );

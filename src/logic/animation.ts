@@ -111,6 +111,15 @@ export class CanvasRenderer {
     this.emitOnAnimationOver = animationOver[1];
   }
 
+  public resize() {
+    if (!this.context) return;
+
+    this.context.canvas.width =
+      this.animationState.cups.length * cupSize[0] +
+      (this.animationState.cups.length + 1) * cupSpacing;
+    this.context.canvas.height = 4 * cupSpacing + 3 * cupSize[1];
+  }
+
   public freshCups(count: number) {
     this.animationState.cups = Array(count)
       .fill(1)

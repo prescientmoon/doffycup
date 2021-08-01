@@ -1,0 +1,33 @@
+.level {
+  height: 100%;
+  display: flex;
+}
+
+.level > .level__right,
+.level > .level__left > .level__left-script-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.level > .level__left > .level__title {
+  color: white;
+  margin-top: 2rem;
+}
+
+.level > .level__left > .level__left-script-container {
+  margin-bottom: 10rem;
+  height: 80%;
+}
+
+.level > .level__right {
+  width: 100%;
+  background: var(--secondary);
+}
+
+.level > .level__left {
+  padding: 2rem;
+  box-sizing: border-box;
+  background: var(--primary);
+}
