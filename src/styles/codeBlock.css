@@ -21,7 +21,7 @@
 }
 
 .code-block.code-block--highlighted {
-  box-shadow: 0.2rem 0.2rem 0.4rem 0.2rem rgb(228, 152, 152);
+  box-shadow: 0 0 2px 2px rgb(136, 255, 0);
   z-index: 10;
 }
 
