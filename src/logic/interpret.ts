@@ -9,12 +9,13 @@ export type InterpreterSnapshot = [CodeBlockPath, Block];
 
 export function* interpretProgram(
   program: Program,
-  state: ExecutionState
+  state: ExecutionState,
+  offset = 0
 ): Generator<InterpreterSnapshot> {
   for (let index = 0; index < program.length; index++) {
     const step = program[index];
 
-    state.path.push(index);
+    state.path.push(index + offset);
     yield* interpretBlock(step, state);
     state.path.pop();
   }
@@ -39,6 +40,6 @@ export function* interpretBlock(
     case "ifContainsBall":
       if (state.cups[block.target] === block.ballColor)
         yield* interpretProgram(block.then, state);
-      else yield* interpretProgram(block.otherwise, state);
+      else yield* interpretProgram(block.otherwise, state, block.then.length);
   }
 }
