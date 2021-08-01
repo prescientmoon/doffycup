@@ -22,7 +22,7 @@ body {
 }
 
 :root {
-  --spacing: 1rem;
+  --spacing: 0.8rem;
   --primary: #4678c4;
   --secondary: #53c3f7;
   --tertiary: #003638;
