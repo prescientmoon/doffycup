@@ -172,8 +172,6 @@ export class CanvasRenderer {
       if (this.cupOrigins[queue.startedOn] === queue.cup) {
         delete this.cupOrigins[queue.startedOn];
       } else {
-        // console.log(this.cupOrigins);
-
         throw new Error(
           `Invalid animation: cup with id ${queue.cup} is supposed to exist at ${queue.startedOn}`
         );
@@ -184,8 +182,6 @@ export class CanvasRenderer {
   private update() {
     const now = performance.now();
     const workToDo = !!this.animationsInProgress.length;
-
-    // console.log(this.animationsInProgress.length);
 
     for (let index = 0; index < this.animationsInProgress.length; index++) {
       const animation = this.animationsInProgress[index];
