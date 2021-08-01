@@ -21,6 +21,7 @@
 
 .code-block.code-block--highlighted {
   box-shadow: 0.2rem 0.2rem 0.4rem 0.2rem black;
+  z-index: 10;
 }
 
 .code-block > .code-block__title > .code-block__highlight {
