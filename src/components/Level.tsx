@@ -26,6 +26,7 @@ type LevelState = ADT<{
 }>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
+  const [globalState, setGlobalState] = useAppState();
   const [interpreterSnapshot, setInterpreterSnapshot] =
     useState<null | InterpreterSnapshot>(null);
   const renderer = useRef<CanvasRenderer>(new CanvasRenderer(null));
@@ -36,7 +37,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   const [lastMousePosition, setMousePosition] = useState<Vec2Like | null>(null);
   const [appState, setAppState] = useAppState();
 
-  const levelCompleted = appState.completed > levelNumber;
+  const levelCompleted = appState.completed == levelNumber;
 
   const [currentState, setCurrentState] = useState<LevelState>({
     _type: "waiting",
@@ -53,7 +54,9 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       return null;
     });
 
-  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [playbackSpeed, setPlaybackSpeed] = useState(
+    levelNumber == globalState.completed ? 20 : 1
+  );
 
   const initialExecutionState = {
     path: [],
@@ -238,15 +241,21 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           {
             <div className="playAnimationButtonContainer">
               <div
-                className="playAnimationButton"
+                className={`playAnimationButton ${
+                  levelNumber == globalState.completed
+                    ? "playAnimationButtonSpecial"
+                    : ""
+                }`}
                 onClick={() => {
                   if (currentState._type !== "waiting") {
                     renderer.current.forceAnimationFinish();
                     renderer.current.shouldRenderBalls = true;
                     renderer.current.freshCups(currentLevel.cups, cups);
                   }
+                  console.log(playbackSpeed);
 
                   renderer.current.animationSpeed = playbackSpeed;
+
                   if (currentState._type === "waiting") {
                     setCurrentState({
                       _type: "waitinForLiftDown",
@@ -263,7 +272,11 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                 Play: x{playbackSpeed}
               </div>
               <input
-                className="playbackSpeedInput"
+                className={`playbackSpeedInput ${
+                  levelNumber == globalState.completed
+                    ? "playbackSpeedInputDisabled"
+                    : ""
+                }`}
                 type="range"
                 min="1"
                 max="5"
