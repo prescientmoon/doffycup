@@ -72,6 +72,7 @@ export type AnimationState = {
   cups: Array<{
     position: Vec2Like;
     beforeAnimation: Vec2Like;
+    isLifted: boolean;
   }>;
   hovered: number | null;
 };
