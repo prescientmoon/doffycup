@@ -36,7 +36,10 @@ type LevelState = ADT<{
 
 export default ({ levelNumber }: { levelNumber: number }) => {
   const [globalState, setGlobalState] = useAppState();
-  if (levelNumber > globalState.completed) {
+  if (
+    levelNumber > globalState.completed ||
+    levelNumber > levelsList.length - 1
+  ) {
     route("/levels", true);
   }
 
@@ -293,53 +296,68 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             </div>
           )}
           {
-            <div className="playAnimationButtonContainer">
-              <div
-                className={`playAnimationButton ${
-                  levelNumber == globalState.completed
-                    ? "playAnimationButtonSpecial"
-                    : ""
-                }`}
-                onClick={() => {
-                  renderer.current.animationSpeed = playbackSpeed;
-                  if (currentState._type !== "waiting") {
-                    renderer.current.forceAnimationFinish();
-                    renderer.current.shouldRenderBalls = true;
-                    renderer.current.freshCups(currentLevel.cups, cups);
-                  }
+            <div className="nextLevelPlayContainer">
+              {levelNumber != globalState.completed ? (
+                <div
+                  className="nextLevelButton"
+                  onClick={() => {
+                    route(`/levels`, true);
+                  }}
+                >
+                  {" "}
+                  Next {">>"}
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="playAnimationButtonContainer">
+                <div
+                  className={`playAnimationButton ${
+                    levelNumber == globalState.completed
+                      ? "playAnimationButtonSpecial"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    renderer.current.animationSpeed = playbackSpeed;
+                    if (currentState._type !== "waiting") {
+                      renderer.current.forceAnimationFinish();
+                      renderer.current.shouldRenderBalls = true;
+                      renderer.current.freshCups(currentLevel.cups, cups);
+                    }
 
-                  if (currentState._type === "waiting") {
-                    setCurrentState({
-                      _type: "waitinForLiftDown",
-                    });
-                    renderer.current.unliftAll();
-                  } else {
-                    setCurrentState({
-                      _type: "waitingForLiftUp",
-                    });
-                    renderer.current.liftAll();
-                  }
-                }}
-              >
-                Play: x
-                {levelNumber == globalState.completed ? 10 : playbackSpeed}
+                    if (currentState._type === "waiting") {
+                      setCurrentState({
+                        _type: "waitinForLiftDown",
+                      });
+                      renderer.current.unliftAll();
+                    } else {
+                      setCurrentState({
+                        _type: "waitingForLiftUp",
+                      });
+                      renderer.current.liftAll();
+                    }
+                  }}
+                >
+                  Play: x
+                  {levelNumber == globalState.completed ? 10 : playbackSpeed}
+                </div>
+                <input
+                  className={`playbackSpeedInput ${
+                    levelNumber == globalState.completed
+                      ? "playbackSpeedInputDisabled"
+                      : ""
+                  }`}
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={playbackSpeed}
+                  step="0.1"
+                  onChange={(e) => {
+                    const target = e.target as HTMLInputElement;
+                    setPlaybackSpeed(Number(target.value));
+                  }}
+                />
               </div>
-              <input
-                className={`playbackSpeedInput ${
-                  levelNumber == globalState.completed
-                    ? "playbackSpeedInputDisabled"
-                    : ""
-                }`}
-                type="range"
-                min="1"
-                max="5"
-                value={playbackSpeed}
-                step="0.1"
-                onChange={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  setPlaybackSpeed(Number(target.value));
-                }}
-              />
             </div>
           }
         </div>
