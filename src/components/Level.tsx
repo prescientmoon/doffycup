@@ -106,7 +106,10 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   useEffect(() => {
     const state = renderer.current.animationState;
-    if (lastMousePosition === null || currentState._type !== "waiting") return;
+    if (lastMousePosition === null || currentState._type !== "waiting") {
+      state.hovered = null;
+      return;
+    }
 
     if (
       lastMousePosition[1] < cupSpacing + cupSize[1] ||
@@ -145,6 +148,9 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           <canvas
             width="1000"
             height="1000"
+            onMouseLeave={() => {
+              setMousePosition(null);
+            }}
             onMouseMove={(e) => {
               const canvas = e.target as HTMLCanvasElement;
               const clientRect = canvas.getBoundingClientRect();
