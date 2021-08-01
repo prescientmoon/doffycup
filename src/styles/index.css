@@ -71,7 +71,7 @@ input[type="range"]::-moz-range-thumb {
 input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   cursor: pointer;
-  animate: 0.2s;
+  transition: 0.2s;
   box-shadow: 1px 1px 1px #000000;
   background: #3071a9;
   border-radius: 15px;

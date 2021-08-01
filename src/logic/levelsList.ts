@@ -250,42 +250,38 @@ export const levelsList: Level[] = [
     startingBalls: {
       blue: 3,
     },
-    sections: [
+    question: "blue",
+    program: [
       {
-        hidden: true,
+        _type: "repeat",
+        times: 3,
         program: [
           {
-            _type: "repeat",
-            times: 3,
-            program: [
+            _type: "ifContainsBall",
+            ballColor: "blue",
+            then: [
               {
-                _type: "ifContainsBall",
-                ballColor: "blue",
-                then: [
-                  {
-                    _type: "repeat",
-                    times: 2,
-                    program: [
-                      {
-                        _type: "swap",
-                        cups: [1, 3],
-                      },
-                      {
-                        _type: "swap",
-                        cups: [2, 3],
-                      },
-                    ],
-                  },
-                ],
-                otherwise: [
+                _type: "repeat",
+                times: 2,
+                program: [
                   {
                     _type: "swap",
                     cups: [1, 3],
                   },
+                  {
+                    _type: "swap",
+                    cups: [2, 3],
+                  },
                 ],
-                target: 3,
               },
             ],
+            otherwise: [
+              {
+                _type: "swap",
+                cups: [1, 3],
+              },
+            ],
+            target: 3,
           },
         ],
       },
@@ -298,23 +294,19 @@ export const levelsList: Level[] = [
       blue: 0,
     },
 
-    sections: [
+    question: "orange",
+    program: [
       {
-        hidden: true,
-        program: [
-          {
-            _type: "swap",
-            cups: [0, 2],
-          },
-          {
-            _type: "swap",
-            cups: [1, 0],
-          },
-          {
-            _type: "swap",
-            cups: [2, 1],
-          },
-        ],
+        _type: "swap",
+        cups: [0, 2],
+      },
+      {
+        _type: "swap",
+        cups: [1, 0],
+      },
+      {
+        _type: "swap",
+        cups: [2, 1],
       },
     ],
   },
@@ -324,6 +316,7 @@ export const levelsList: Level[] = [
       orange: 1,
       blue: 0,
     },
+    question: "blue",
 
     program: [
       {
@@ -345,7 +338,6 @@ export const levelsList: Level[] = [
         ],
       },
     ],
-    question: "orange",
   },
   {
     cups: 4,
@@ -353,48 +345,43 @@ export const levelsList: Level[] = [
       green: 1,
       blue: 0,
     },
-
-    sections: [
+    question: "green",
+    program: [
       {
-        hidden: true,
+        _type: "repeat",
+        times: 3,
         program: [
           {
-            _type: "repeat",
-            times: 3,
-            program: [
+            _type: "ifContainsBall",
+            ballColor: "blue",
+            target: 0,
+            then: [
               {
-                _type: "ifContainsBall",
-                ballColor: "blue",
-                target: 0,
-                then: [
-                  {
-                    _type: "swap",
-                    cups: [0, 1],
-                  },
-                ],
-                otherwise: [
-                  {
-                    _type: "swap",
-                    cups: [1, 2],
-                  },
-                ],
+                _type: "swap",
+                cups: [0, 1],
               },
+            ],
+            otherwise: [
               {
-                _type: "ifContainsBall",
-                ballColor: "green",
-                target: 0,
-                then: [
-                  {
-                    _type: "swap",
-                    cups: [2, 3],
-                  },
-                ],
-                otherwise: [
-                  {
-                    _type: "swap",
-                    cups: [0, 3],
-                  },
-                ],
+                _type: "swap",
+                cups: [1, 2],
+              },
+            ],
+          },
+          {
+            _type: "ifContainsBall",
+            ballColor: "green",
+            target: 0,
+            then: [
+              {
+                _type: "swap",
+                cups: [2, 3],
+              },
+            ],
+            otherwise: [
+              {
+                _type: "swap",
+                cups: [0, 3],
               },
             ],
           },
