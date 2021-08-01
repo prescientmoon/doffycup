@@ -10,12 +10,13 @@ import { ADT } from "ts-adt";
 import { Vec2Like } from "@thi.ng/vectors";
 import { BlockColor } from "src/types/Program";
 import { ComponentChildren } from "preact";
+import { useAppState } from "../logic/state";
 
 const minimumHighlightTime = 700;
 
 type LevelState = ADT<{
-  executing: {};
   waitingForAnswer: { prompt: ComponentChildren };
+  executing: {};
   waiting: {};
   waitinForLiftDown: {};
   waitingForLiftUp: {};
@@ -30,6 +31,9 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   const currentProgram = currentLevel.program;
   const [lastMousePosition, setMousePosition] = useState<Vec2Like | null>(null);
+  const [appState, setAppState] = useAppState();
+
+  const levelCompleted = appState.completed > levelNumber;
 
   const [currentState, setCurrentState] = useState<LevelState>({
     _type: "waiting",
@@ -56,6 +60,16 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   );
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const execute = () => {
+    if (!levelCompleted) {
+      renderer.current.animationSpeed = 20;
+    }
+
+    setCurrentState({
+      _type: "executing",
+    });
+  };
 
   const forwardEvaluation = useCallback(() => {
     const waitAndContinue = () => {
@@ -107,9 +121,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
         renderer.current.unliftAll();
       }
       if (currentState._type === "waitinForLiftDown") {
-        setCurrentState({
-          _type: "executing",
-        });
+        execute();
 
         interpreterState.current = interpretProgram(currentProgram, {
           path: [],
@@ -143,8 +155,6 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
       renderer.current.shouldRenderBalls = true;
       renderer.current.liftAll();
-      //      forwardEvaluation();
-      //    setCurrentState({ _type: "executing" });
     }
   }, []);
 

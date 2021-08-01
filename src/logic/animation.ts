@@ -97,7 +97,7 @@ export class CanvasRenderer {
   };
 
   public animationSpeed = 1;
-  private cupOrigins: Record<number, number> = { 0: 0 };
+  private cupOrigins: Partial<Record<number, number>> = {};
   private animationsInProgress: Array<AnimationQueue> = [];
 
   public onAnimationOver: Stream.Stream<void>;
@@ -185,6 +185,8 @@ export class CanvasRenderer {
     const now = performance.now();
     const workToDo = !!this.animationsInProgress.length;
 
+    console.log(this.animationsInProgress.length);
+
     for (let index = 0; index < this.animationsInProgress.length; index++) {
       const animation = this.animationsInProgress[index];
 
@@ -267,7 +269,7 @@ export class CanvasRenderer {
 
   public liftCup(index: number) {
     this.animationsInProgress.push({
-      cup: this.cupOrigins[index],
+      cup: this.cupOrigins[index]!,
       startedOn: index,
       endsOn: index,
       startedAt: performance.now(),
