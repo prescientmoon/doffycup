@@ -389,4 +389,156 @@ export const levelsList: Level[] = [
       },
     ],
   },
+  {
+    cups: 5,
+    startingBalls: {
+      orange: 1,
+      cyan: 0,
+    },
+    question: "cyan",
+    program: [
+      {
+        _type: "repeat",
+        times: 5,
+        program: [
+          {
+            _type: "ifContainsBall",
+            ballColor: "cyan",
+            target: 0,
+            then: [
+              {
+                _type: "swap",
+                cups: [0, 1],
+              },
+              {
+                _type: "swap",
+                cups: [1, 4],
+              },
+            ],
+            otherwise: [
+              {
+                _type: "swap",
+                cups: [0, 3],
+              },
+              {
+                _type: "swap",
+                cups: [1, 2],
+              },
+              {
+                _type: "swap",
+                cups: [0, 1],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    cups: 10,
+    startingBalls: {
+      orange: 1,
+      cyan: 0,
+      blue: 3,
+      green: 2,
+    },
+    question: "green",
+    program: [
+      {
+        _type: "repeat",
+        times: 2,
+        program: [
+          {
+            _type: "swap",
+            cups: [0, 1],
+          },
+          {
+            _type: "swap",
+            cups: [2, 3],
+          },
+          {
+            _type: "swap",
+            cups: [3, 5],
+          },
+          {
+            _type: "swap",
+            cups: [5, 2],
+          },
+          {
+            _type: "swap",
+            cups: [7, 9],
+          },
+          {
+            _type: "swap",
+            cups: [4, 7],
+          },
+          {
+            _type: "swap",
+            cups: [6, 4],
+          },
+          {
+            _type: "swap",
+            cups: [1, 6],
+          },
+          {
+            _type: "swap",
+            cups: [2, 0],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    cups: 5,
+    startingBalls: {
+      orange: 1,
+      cyan: 0,
+    },
+    question: "cyan",
+    program: [
+      {
+        _type: "repeat",
+        times: 2,
+        program: [
+          {
+            _type: "swap",
+            cups: [2, 4],
+          },
+          {
+            _type: "ifContainsBall",
+            ballColor: "cyan",
+            target: 0,
+            then: [
+              {
+                _type: "repeat",
+                times: 3,
+                program: [
+                  {
+                    _type: "swap",
+                    cups: [0, 3],
+                  },
+                ],
+              },
+            ],
+            otherwise: [
+              {
+                _type: "repeat",
+                times: 3,
+                program: [
+                  {
+                    _type: "swap",
+                    cups: [1, 4],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            _type: "swap",
+            cups: [0, 2],
+          },
+        ],
+      },
+    ],
+  },
 ];
