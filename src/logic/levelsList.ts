@@ -138,7 +138,7 @@ export const levelsList: Level[] = [
             program: [
               {
                 _type: "ifContainsBall",
-                ballColor: "cyan",
+                ballColor: "orange",
                 then: [
                   {
                     _type: "swap",
@@ -151,7 +151,7 @@ export const levelsList: Level[] = [
                     cups: [2, 3],
                   },
                 ],
-                target: 1,
+                target: 3,
               },
               {
                 _type: "swap",
