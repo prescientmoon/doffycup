@@ -209,30 +209,30 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             </div>
           )}
           {
-            <div
-              className="playAnimationButtonContainer"
-              onClick={() => {
-                if (currentState._type !== "waiting") {
-                  renderer.current.forceAnimationFinish();
-                  renderer.current.shouldRenderBalls = true;
-                  renderer.current.freshCups(currentLevel.cups, cups);
-                }
+            <div className="playAnimationButtonContainer">
+              <div
+                className="playAnimationButton"
+                onClick={() => {
+                  if (currentState._type !== "waiting") {
+                    renderer.current.forceAnimationFinish();
+                    renderer.current.shouldRenderBalls = true;
+                    renderer.current.freshCups(currentLevel.cups, cups);
+                  }
 
-                renderer.current.animationSpeed = playbackSpeed;
-                if (currentState._type === "waiting") {
-                  setCurrentState({
-                    _type: "waitinForLiftDown",
-                  });
-                  renderer.current.unliftAll();
-                } else {
-                  setCurrentState({
-                    _type: "waitingForLiftUp",
-                  });
-                  renderer.current.liftAll();
-                }
-              }}
-            >
-              <div className="playAnimationButton">
+                  renderer.current.animationSpeed = playbackSpeed;
+                  if (currentState._type === "waiting") {
+                    setCurrentState({
+                      _type: "waitinForLiftDown",
+                    });
+                    renderer.current.unliftAll();
+                  } else {
+                    setCurrentState({
+                      _type: "waitingForLiftUp",
+                    });
+                    renderer.current.liftAll();
+                  }
+                }}
+              >
                 Play Animation: x{playbackSpeed}
               </div>
               <input
