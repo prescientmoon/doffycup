@@ -53,9 +53,9 @@ const CodeBlockHead = (props: { block: Block }) => {
       return (
         <>
           Swap
-          <CodeBlockHighlight>{props.block.cups[0]}</CodeBlockHighlight>
+          <CodeBlockHighlight>{props.block.cups[0] + 1}</CodeBlockHighlight>
           with
-          <CodeBlockHighlight>{props.block.cups[1]}</CodeBlockHighlight>
+          <CodeBlockHighlight>{props.block.cups[1] + 1}</CodeBlockHighlight>
         </>
       );
   }
