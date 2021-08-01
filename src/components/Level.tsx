@@ -170,8 +170,16 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             </div>
           )}
           {
-            <div className="playAnimationButtonContainer">
-              <div className="playAnimationButton">Play Animation</div>
+            <div
+              className="playAnimationButtonContainer"
+              onClick={() => {
+                // here put your on click stuff also use the playbackSpeed
+                // yourClickHandler(playbackSpeed)
+              }}
+            >
+              <div className="playAnimationButton">
+                Play Animation: x{playbackSpeed}
+              </div>
               <input
                 className="playbackSpeedInput"
                 type="range"
