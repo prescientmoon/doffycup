@@ -2,31 +2,31 @@
 
 html,
 body {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
-  font-family: "Roboto Mono", monospace;
+    font-family: "Roboto Mono", monospace;
 
-  overflow: hidden;
+    overflow: hidden;
 }
 
 #app {
-  height: 100%;
-  font-size: 1.5em;
+    height: 100%;
+    font-size: 1.5em;
 }
 
 :root {
-  --spacing: 1rem;
-  --primary: #004346;
-  --secondary: #75dddd;
-  --tertiary: #172a3a;
+    --spacing: 1rem;
+    --primary: #4678c4;
+    --secondary: #53c3f7;
+    --tertiary: #003638;
 
-  --blue: #2e82f7;
-  --orange: #f4b03e;
-  --green: #5fcf9c;
-  --cyan: #5ac9ca;
+    --blue: #2e82f7;
+    --orange: #f4b03e;
+    --green: #5fcf9c;
+    --cyan: #5ac9ca;
 }

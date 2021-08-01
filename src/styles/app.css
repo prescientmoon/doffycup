@@ -1,33 +1,37 @@
 .miniNavbar {
-  position: fixed;
-  display: flex;
-  top: 0;
-  left: 0;
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
 
-  padding: 15px 0 0 15px;
-  color: white;
+    padding: 15px 0 0 15px;
+    color: white;
 }
 
 .miniNavbar svg {
-  margin-right: 15px;
-  padding: 5px;
-  border-radius: 5px;
-  height: 25px;
-  width: 25px;
-  float: left;
-  transition: 250ms;
+    margin-right: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    height: 25px;
+    width: 25px;
+    float: left;
+    transition: 250ms;
+    fill: white !important;
+}
+.miniNavbar svg path {
+    fill: white !important;
 }
 
 .miniNavbar svg:hover {
-  background: var(--secondary);
-  /* background: #004346; */
-  transition: 250ms;
-  cursor: pointer;
+    background: var(--secondary);
+    /* background: #004346; */
+    transition: 250ms;
+    cursor: pointer;
 }
 
 .appContent {
-  top: 0;
-  left: 0;
-  padding: 0;
-  height: 100vh;
+    top: 0;
+    left: 0;
+    padding: 0;
+    height: 100vh;
 }
