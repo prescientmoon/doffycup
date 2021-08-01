@@ -9,13 +9,10 @@ import cupTextureUrl from "../assets/cup.png";
 
 // ========== Constants
 
-const cupTexture = new Image(342, 398);
+const cupTexture = new Image(343, 400);
 cupTexture.src = cupTextureUrl;
 
-export const cupSize = [
-  100,
-  (100 * cupTexture.height) / cupTexture.width,
-] as const;
+export const cupSize = [cupTexture.width / 3, cupTexture.height / 3] as const;
 export const cupSpacing = 20;
 
 // ========== Implementation
