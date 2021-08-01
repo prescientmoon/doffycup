@@ -33,6 +33,8 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     prompt: "Waiting for execution to start",
   });
 
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+
   const interpreterState = useRef(
     interpretProgram(currentProgram, {
       path: [],
@@ -168,6 +170,24 @@ export default ({ levelNumber }: { levelNumber: number }) => {
               <div className="level__prompt-text">{currentState.prompt}</div>
             </div>
           )}
+          {
+            <div className="playAnimationButtonContainer">
+              <div className="playAnimationButton">Play Animation</div>
+              <input
+                className="playbackSpeedInput"
+                type="range"
+                min="1"
+                max="5"
+                value={playbackSpeed}
+                step="0.1"
+                onChange={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  setPlaybackSpeed(Number(target.value));
+                  console.log(target.value);
+                }}
+              />
+            </div>
+          }
         </div>
       </div>
     </>
