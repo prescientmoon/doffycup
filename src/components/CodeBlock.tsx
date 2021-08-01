@@ -61,7 +61,7 @@ const CodeBlockHead = (props: { block: Block }) => {
     case "ifContainsBall":
       return (
         <>
-          If <CodeBlockHighlight>{props.block.target}</CodeBlockHighlight>
+          If <CodeBlockHighlight>{props.block.target + 1}</CodeBlockHighlight>
           contains
           <span
             className={`code-block__colored-ball code-block__colored-ball--${props.block.ballColor}`}
