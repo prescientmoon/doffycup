@@ -96,6 +96,7 @@ export class CanvasRenderer {
     hovered: null,
   };
 
+  public animationSpeed = 1;
   private cupOrigins: Record<number, number> = { 0: 0 };
   private animationsInProgress: Array<AnimationQueue> = [];
 
@@ -195,11 +196,14 @@ export class CanvasRenderer {
         return (
           cup.beforeAnimation[index] +
           ((now - animation.startedAt) * currentStep.amount[index]) /
-            currentStep.length
+            (currentStep.length / this.animationSpeed)
         );
       }) as [number, number];
 
-      if (animation.startedAt + currentStep.length <= now) {
+      if (
+        animation.startedAt + currentStep.length / this.animationSpeed <=
+        now
+      ) {
         cup.position = add2(
           [],
           currentStep.amount,
@@ -277,9 +281,24 @@ export class CanvasRenderer {
     });
   }
 
+  public unliftCup(index: number) {
+    this.liftCup(index);
+
+    for (const step of this.animationsInProgress[
+      this.animationsInProgress.length - 1
+    ].steps) {
+      step.amount[1] *= -1;
+    }
+  }
+
   public liftAll() {
     //this.forceAnimationFinish();
     for (let i = 0; i < this.animationState.cups.length; i++) this.liftCup(i);
+  }
+
+  public unliftAll() {
+    //this.forceAnimationFinish();
+    for (let i = 0; i < this.animationState.cups.length; i++) this.unliftCup(i);
   }
 
   private renderBalls() {

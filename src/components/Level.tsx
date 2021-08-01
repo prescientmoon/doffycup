@@ -16,6 +16,7 @@ type LevelState = ADT<{
   executing: {};
   waitingForAnswer: { prompt: string };
   waiting: {};
+  waitinForLiftDown: {};
 }>;
 
 export default ({ levelNumber }: { levelNumber: number }) => {
@@ -43,6 +44,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
       return null;
     });
+
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
   const interpreterState = useRef(
@@ -56,7 +58,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
   const forwardEvaluation = useCallback(() => {
     const waitAndContinue = () => {
-      setTimeout(forwardEvaluation, minimumHighlightTime);
+      setTimeout(forwardEvaluation, minimumHighlightTime * playbackSpeed);
     };
 
     const snapshot = interpreterState.current.next();
@@ -87,8 +89,17 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     renderer.current.onAnimationOver,
     () => {
       if (currentState._type === "executing") forwardEvaluation();
+      if (currentState._type === "waitinForLiftDown") {
+        setCurrentState({
+          _type: "executing",
+        });
+
+        renderer.current.shouldRenderBalls = false;
+
+        forwardEvaluation();
+      }
     },
-    [interpreterState, renderer]
+    [interpreterState, renderer, currentState]
   );
 
   // Kickstart rendering
@@ -178,8 +189,14 @@ export default ({ levelNumber }: { levelNumber: number }) => {
             <div
               className="playAnimationButtonContainer"
               onClick={() => {
-                // here put your on click stuff also use the playbackSpeed
-                // yourClickHandler(playbackSpeed)
+                if (currentState._type === "waiting") {
+                  renderer.current.animationSpeed = playbackSpeed;
+                  setCurrentState({
+                    _type: "waitinForLiftDown",
+                  });
+
+                  renderer.current.unliftAll();
+                }
               }}
             >
               <div className="playAnimationButton">
