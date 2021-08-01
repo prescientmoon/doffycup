@@ -12,8 +12,11 @@ import cupTextureUrl from "../assets/cup.png";
 const cupTexture = new Image(342, 398);
 cupTexture.src = cupTextureUrl;
 
-const cupSize = [100, (100 * cupTexture.height) / cupTexture.width] as const;
-const cupSpacing = 20;
+export const cupSize = [
+  100,
+  (100 * cupTexture.height) / cupTexture.width,
+] as const;
+export const cupSpacing = 20;
 
 // ========== Implementation
 const blockToAnimation = (
@@ -80,30 +83,16 @@ const cupDefaultPosition = (nth: number) => {
   return [x, y];
 };
 
-export const renderAnimationState = (
-  ctx: CanvasRenderingContext2D,
-  state: AnimationState
-) => {
-  for (const cup of state.cups) {
-    ctx.drawImage(
-      cupTexture,
-      cup.position[0],
-      cup.position[1],
-      cupSize[0],
-      cupSize[1]
-    );
-  }
-};
-
 export class CanvasRenderer {
   private handlerId: null | number = null;
-  private animationState: AnimationState = {
+  public animationState: AnimationState = {
     cups: [
       {
         position: [100, 100],
         beforeAnimation: [100, 100],
       },
     ],
+    hovered: null,
   };
 
   private cupOrigins: Record<number, number> = { 0: 0 };
@@ -231,13 +220,35 @@ export class CanvasRenderer {
     }
   }
 
+  private renderAnimationState() {
+    if (!this.context) return;
+
+    for (let index = 0; index < this.animationState.cups.length; index++) {
+      const cup = this.animationState.cups[index];
+
+      if (cup === null) continue;
+
+      this.context.drawImage(
+        cupTexture,
+        cup.position[0],
+        cup.position[1] -
+          (this.animationState.hovered! ===
+          Object.values(this.cupOrigins).indexOf(index)
+            ? 20
+            : 0),
+        cupSize[0],
+        cupSize[1]
+      );
+    }
+  }
+
   public render() {
     this.update();
 
     if (this.context) {
       this.context.clearRect(0, 0, 10000, 10000);
       0;
-      renderAnimationState(this.context, this.animationState);
+      this.renderAnimationState();
     }
 
     this.handlerId = requestAnimationFrame(() => this.render());

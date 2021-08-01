@@ -67,6 +67,7 @@ export type AnimationState = {
     position: Vec2Like;
     beforeAnimation: Vec2Like;
   }>;
+  hovered: number | null;
 };
 
 // ========== Low level dsl
