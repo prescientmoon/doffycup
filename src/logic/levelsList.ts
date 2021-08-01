@@ -325,31 +325,27 @@ export const levelsList: Level[] = [
       blue: 0,
     },
 
-    sections: [
+    program: [
       {
-        hidden: true,
+        _type: "repeat",
+        times: 2,
         program: [
           {
-            _type: "repeat",
-            times: 2,
-            program: [
-              {
-                _type: "swap",
-                cups: [0, 2],
-              },
-              {
-                _type: "swap",
-                cups: [1, 0],
-              },
-              {
-                _type: "swap",
-                cups: [2, 1],
-              },
-            ],
+            _type: "swap",
+            cups: [0, 2],
+          },
+          {
+            _type: "swap",
+            cups: [1, 0],
+          },
+          {
+            _type: "swap",
+            cups: [2, 1],
           },
         ],
       },
     ],
+    question: "orange",
   },
   {
     cups: 4,

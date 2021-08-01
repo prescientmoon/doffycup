@@ -70,7 +70,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           <>
             Where is the{" "}
             <span
-              className={`code-block__colored-ball code-block__colored-ball--${currentLevel.question}`}
+              className={`level__prompt-ball level__prompt-ball--${currentLevel.question}`}
             />{" "}
             ?
           </>

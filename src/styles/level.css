@@ -55,6 +55,8 @@
 
 .level > .level__right > .level__prompt > .level__prompt-text {
   font-size: 3rem;
+  display: flex;
+  align-items: center;
 }
 
 .playAnimationButtonContainer {
@@ -106,4 +108,32 @@
   cursor: pointer;
   border: 1px solid white;
   transition: 250ms;
+}
+
+.level__prompt-ball--orange {
+  background: var(--orange);
+}
+
+.level__prompt-ball--blue {
+  background: var(--blue);
+}
+
+.level__prompt-ball--cyan {
+  background: var(--cyan);
+}
+
+.level__prompt-ball--green {
+  background: var(--green);
+}
+
+.level__prompt-ball {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+
+  display: inline-block;
+  border-radius: 3rem;
+
+  padding: 2rem;
+
+  border: 3px solid black;
 }
