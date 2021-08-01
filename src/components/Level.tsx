@@ -245,6 +245,13 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                   renderer.current.liftCup(
                     renderer.current.animationState.hovered
                   );
+
+                  if (!levelCompleted) {
+                    setAppState({
+                      _type: "completeLevel",
+                      level: levelNumber + 1,
+                    });
+                  }
                 } else {
                   renderer.current.liftCup(
                     renderer.current.animationState.hovered
@@ -293,7 +300,6 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                     renderer.current.shouldRenderBalls = true;
                     renderer.current.freshCups(currentLevel.cups, cups);
                   }
-                  console.log(playbackSpeed);
 
                   renderer.current.animationSpeed = playbackSpeed;
 
