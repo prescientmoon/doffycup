@@ -13,7 +13,7 @@
 .code-block > .code-block__children {
   display: flex;
   flex-direction: column;
-  margin-right: calc(-1.3 * var(--spacing));
+  margin-right: calc(-1.5 * var(--spacing));
 }
 
 .code-block > .code-block__title {
