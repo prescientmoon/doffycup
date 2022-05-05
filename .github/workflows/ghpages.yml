@@ -9,11 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and push
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - name: git-checkout
         uses: actions/checkout@v2
@@ -21,8 +16,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install pnpm
-        run: npm i pnpm
+      - name: Use pnpm actions setup
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 7.0.0
       - name: Install dep
         run: pnpm i
       - name: Build
