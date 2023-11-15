@@ -246,7 +246,22 @@ export default (props: { levelNumber: string }) => {
                     _type: "success",
                     prompt: (
                       <span className="level__success-prompt">
-                        Congratulations!
+                        <span>C</span>
+                        <span>o</span>
+                        <span>n</span>
+                        <span>g</span>
+                        <span>r</span>
+                        <span>a</span>
+                        <span>t</span>
+                        <span>u</span>
+                        <span>l</span>
+                        <span>a</span>
+                        <span>t</span>
+                        <span>i</span>
+                        <span>o</span>
+                        <span>n</span>
+                        <span>s</span>
+                        <span>!</span>
                       </span>
                     ),
                   });
