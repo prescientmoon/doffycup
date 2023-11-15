@@ -76,7 +76,7 @@ export default (props: { levelNumber: string }) => {
   };
 
   const interpreterState = useRef(
-    interpretProgram(currentProgram, initialExecutionState),
+    interpretProgram(currentProgram, initialExecutionState)
   );
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -169,7 +169,7 @@ export default (props: { levelNumber: string }) => {
         forwardEvaluation();
       }
     },
-    [interpreterState, renderer, currentState],
+    [interpreterState, renderer, currentState]
   );
 
   // Kickstart rendering
@@ -213,7 +213,7 @@ export default (props: { levelNumber: string }) => {
     }
 
     state.hovered = Math.floor(
-      (lastMousePosition[0] + cupSpacing / 2) / (cupSpacing + cupSize[0]),
+      (lastMousePosition[0] + cupSpacing / 2) / (cupSpacing + cupSize[0])
     );
   }, [lastMousePosition]);
 
@@ -253,7 +253,7 @@ export default (props: { levelNumber: string }) => {
 
                   renderer.current.shouldRenderBalls = true;
                   renderer.current.liftCup(
-                    renderer.current.animationState.hovered,
+                    renderer.current.animationState.hovered
                   );
 
                   if (!levelCompleted) {
@@ -264,7 +264,7 @@ export default (props: { levelNumber: string }) => {
                   }
                 } else {
                   renderer.current.liftCup(
-                    renderer.current.animationState.hovered,
+                    renderer.current.animationState.hovered
                   );
 
                   setCurrentState({
@@ -298,6 +298,13 @@ export default (props: { levelNumber: string }) => {
           )}
           {
             <div className="nextLevelPlayContainer">
+              {levelNumber > 0 ? (
+                <Link href={`/levels/${levelNumber - 1}`}>
+                  <div className="prevLevelButton">{"<<"} Prev</div>
+                </Link>
+              ) : (
+                ""
+              )}
               {levelNumber != globalState.completed ? (
                 <Link href={`/levels/${levelNumber + 1}`}>
                   <div className="nextLevelButton">Next {">>"}</div>
@@ -333,11 +340,7 @@ export default (props: { levelNumber: string }) => {
                     }
                   }}
                 >
-                  { 
-                    levelCompleted
-                      ? `Play (x${playbackSpeed})`
-                      : "Start"
-                  }
+                  {levelCompleted ? `Play (x${playbackSpeed})` : "Start"}
                 </div>
                 <input
                   className={`playbackSpeedInput ${
