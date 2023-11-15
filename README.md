@@ -1,3 +1,19 @@
 # Doffycup
 
-To see how the project looks like and how it works see the presentation here: https://youtu.be/h536BEVIe1U?t=296
+Doffycup is a small game for introducing young children to basic code execution. An online version you can try for yourself is hosted on [github pages](https://mateiadrielrafael.github.io/doffycup/).
+
+## Tech stack
+
+The project is built using preact and typescript. The can be built reproducibly using nix. Moreover, the project provides a nix shell for development.
+
+### Changing dependencies
+
+The npm dependency hash needs to be recomputed when the npm lockfile changes:
+
+```sh
+nix run .#compute-npm-dep-hash
+```
+
+## Infoeducatie 2021
+
+This project was made during the final hackathon phase of [infoeducatie 2021](https://infoeducatie.ro/). The scuffed presentation can be found [here](https://youtu.be/h536BEVIe1U?t=296).
