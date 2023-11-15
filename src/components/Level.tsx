@@ -1,17 +1,16 @@
-import { ProgramBlock } from "./CodeBlock";
-
-import { levelsList } from "../logic/levelsList";
+import { h, Fragment, ComponentChildren } from "preact";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import { Link, useLocation } from "wouter-preact";
+import { ADT } from "ts-adt";
+
+import { ProgramBlock } from "./CodeBlock";
+import { levelsList } from "../logic/levelsList";
 import { CanvasRenderer, cupSize, cupSpacing } from "../logic/animation";
 import { InterpreterSnapshot, interpretProgram } from "../logic/interpret";
 import { useStream } from "../types/Stream";
 import "../styles/level.css";
-import { ADT } from "ts-adt";
-import { Vec2Like } from "@thi.ng/vectors";
-import { BlockColor, ExecutionState } from "src/types/Program";
-import { ComponentChildren } from "preact";
+import { BlockColor, ExecutionState, Vec2 } from "src/types/Program";
 import { useAppState } from "../logic/state";
-import { route } from "preact-router";
 
 const minimumHighlightTime = 700;
 
@@ -31,13 +30,15 @@ type LevelState = ADT<{
   waitinForSingleLiftUp: { index: number; solution: ExecutionState["cups"] };
 }>;
 
-export default ({ levelNumber }: { levelNumber: number }) => {
-  const [globalState, setGlobalState] = useAppState();
+export default (props: { levelNumber: string }) => {
+  const levelNumber = Number(props.levelNumber) || 0;
+  const [globalState] = useAppState();
+  const [, setLocation] = useLocation();
   if (
     levelNumber > globalState.completed ||
     levelNumber > levelsList.length - 1
   ) {
-    route("/levels", true);
+    setLocation("/levels");
   }
 
   const [interpreterSnapshot, setInterpreterSnapshot] =
@@ -47,7 +48,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   const currentLevel = levelsList[levelNumber] || levelsList[0];
 
   const currentProgram = currentLevel.program || null;
-  const [lastMousePosition, setMousePosition] = useState<Vec2Like | null>(null);
+  const [lastMousePosition, setMousePosition] = useState<Vec2 | null>(null);
   const [appState, setAppState] = useAppState();
 
   const levelCompleted = appState.completed > levelNumber;
@@ -75,7 +76,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
   };
 
   const interpreterState = useRef(
-    interpretProgram(currentProgram, initialExecutionState)
+    interpretProgram(currentProgram, initialExecutionState),
   );
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -168,7 +169,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
         forwardEvaluation();
       }
     },
-    [interpreterState, renderer, currentState]
+    [interpreterState, renderer, currentState],
   );
 
   // Kickstart rendering
@@ -191,7 +192,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
       renderer.current.shouldRenderBalls = true;
       renderer.current.liftAll();
     }
-  }, []);
+  });
 
   useEffect(() => {
     const state = renderer.current.animationState;
@@ -212,7 +213,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
     }
 
     state.hovered = Math.floor(
-      (lastMousePosition[0] + cupSpacing / 2) / (cupSpacing + cupSize[0])
+      (lastMousePosition[0] + cupSpacing / 2) / (cupSpacing + cupSize[0]),
     );
   }, [lastMousePosition]);
 
@@ -252,7 +253,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
 
                   renderer.current.shouldRenderBalls = true;
                   renderer.current.liftCup(
-                    renderer.current.animationState.hovered
+                    renderer.current.animationState.hovered,
                   );
 
                   if (!levelCompleted) {
@@ -263,7 +264,7 @@ export default ({ levelNumber }: { levelNumber: number }) => {
                   }
                 } else {
                   renderer.current.liftCup(
-                    renderer.current.animationState.hovered
+                    renderer.current.animationState.hovered,
                   );
 
                   setCurrentState({
@@ -298,15 +299,9 @@ export default ({ levelNumber }: { levelNumber: number }) => {
           {
             <div className="nextLevelPlayContainer">
               {levelNumber != globalState.completed ? (
-                <div
-                  className="nextLevelButton"
-                  onClick={() => {
-                    route(`/levels`, true);
-                  }}
-                >
-                  {" "}
-                  Next {">>"}
-                </div>
+                <Link href={`/levels/${levelNumber + 1}`}>
+                  <div className="nextLevelButton">Next {">>"}</div>
+                </Link>
               ) : (
                 ""
               )}
