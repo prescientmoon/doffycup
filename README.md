@@ -4,7 +4,7 @@ Doffycup is a small game with the goal of introducing young children to basic pr
 
 ## Tech stack
 
-The project is built using preact and typescript. The can be built reproducibly using nix. Moreover, the project provides a nix shell for development.
+Doffycup is built using preact and typescript. The project can be built reproducibly using nix. Moreover, we also provide a nix shell for development.
 
 ### Changing dependencies
 
