@@ -333,8 +333,11 @@ export default (props: { levelNumber: string }) => {
                     }
                   }}
                 >
-                  Play: x
-                  {levelNumber == globalState.completed ? 10 : playbackSpeed}
+                  { 
+                    levelCompleted
+                      ? `Play (x${playbackSpeed})`
+                      : "Start"
+                  }
                 </div>
                 <input
                   className={`playbackSpeedInput ${
