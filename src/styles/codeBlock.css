@@ -22,6 +22,7 @@
   align-items: center;
   text-align: left;
   margin-bottom: var(--spacing);
+  font-size: 1rem;
 }
 
 .code-block.code-block--highlighted {
@@ -35,6 +36,7 @@
 
   border-radius: 5px;
 
+  font-size: 1rem;
   padding: 0.3rem;
   background: var(--cyan);
 
@@ -46,13 +48,13 @@
 }
 
 .code-block > .code-block__title > .code-block__colored-ball {
-  margin-left: 0.6rem;
-  margin-right: 0.6rem;
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
 
   display: inline-block;
   border-radius: 2rem;
 
-  padding: 1rem;
+  padding: 0.7rem;
 
   border: 3px solid black;
 }

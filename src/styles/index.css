@@ -30,10 +30,12 @@ body {
 }
 
 :root {
-  --spacing: 0.8rem;
+  --spacing: 0.4rem;
   --primary: #4678c4;
   --secondary: #53c3f7;
   --tertiary: #003638;
+
+  --primary-transparent: #4678c43a;
 
   --blue: #2e82f7;
   --orange: #dfa94d;

@@ -12,7 +12,7 @@
 
 .level > .level__left > .level__title {
   color: white;
-  margin-top: 2rem;
+  margin-top: 0.1rem;
 }
 
 .level > .level__left > .level__left-script-container {
@@ -34,10 +34,14 @@
 
 .level > .level__left {
   padding: 20px;
-  padding-top: 40px;
+  margin-top: 65px;
   box-sizing: border-box;
-  background: var(--primary);
+  background: var(--primary-transparent);
+  backdrop-filter: blur(3px);
   display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 500px;
 }
 
 .level > .level__right > .level__prompt {
