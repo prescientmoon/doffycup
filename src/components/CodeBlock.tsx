@@ -1,4 +1,4 @@
-import { ComponentChildren } from "preact";
+import { h, Fragment, ComponentChildren } from "preact";
 import type {
   Block,
   BlockColor,
@@ -104,7 +104,7 @@ const ElseContinution = (props: ElseContinuationProps) => {
           program={props.block.otherwise}
           highlighted={
             props.highlighted?.map((e, i) =>
-              i === 0 ? e - props.block.then.length : e
+              i === 0 ? e - props.block.then.length : e,
             ) ?? null
           }
         />

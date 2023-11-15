@@ -1,6 +1,6 @@
-import { createContext, useContext } from "react";
+import { useContext } from "preact/hooks";
+import { createContext } from "preact";
 import { ADT } from "ts-adt";
-import { Reducer } from "use-immer";
 
 export interface AppState {
   completed: number;
@@ -26,7 +26,10 @@ export const AppContext = createContext<AppContext>([
 
 export const useAppState = () => useContext(AppContext);
 
-export const updateState: Reducer<AppState, AppAction> = (state, action) => {
+export const updateState = (
+  state: AppState,
+  action: AppAction,
+): AppState | void => {
   switch (action._type) {
     case "loadState":
       return loadState();

@@ -1,11 +1,12 @@
-import { add2, Vec2Like } from "@thi.ng/vectors";
 import {
   AnimationQueues as AnimationQueue,
   AnimationState,
   BlockColor,
   FlatBlock,
+  Vec2,
 } from "src/types/Program";
 import * as Stream from "../types/Stream";
+import { add2 } from "./helpers";
 import cupTextureUrl from "../assets/cup.png";
 
 // ========== Constants
@@ -27,7 +28,7 @@ export const blockColors: Record<BlockColor, string> = {
 // ========== Implementation
 const blockToAnimation = (
   block: FlatBlock,
-  placeToId: (id: number) => number | undefined
+  placeToId: (id: number) => number | undefined,
 ): Array<AnimationQueue> => {
   switch (block._type) {
     case "swap":
@@ -125,7 +126,7 @@ export class CanvasRenderer {
     this.animationState.cups = Array(count)
       .fill(1)
       .map((_, index) => {
-        const position = cupDefaultPosition(index) as Vec2Like;
+        const position = cupDefaultPosition(index) as Vec2;
 
         return {
           position,
@@ -149,10 +150,9 @@ export class CanvasRenderer {
       ) {
         const cup = this.animationState.cups[animation.cup];
         cup.position = add2(
-          null,
           cup.position,
-          animation.steps[stepIndex].amount
-        ) as Vec2Like;
+          animation.steps[stepIndex].amount,
+        ) as Vec2;
       }
     }
 
@@ -173,7 +173,7 @@ export class CanvasRenderer {
         delete this.cupOrigins[queue.startedOn];
       } else {
         throw new Error(
-          `Invalid animation: cup with id ${queue.cup} is supposed to exist at ${queue.startedOn}`
+          `Invalid animation: cup with id ${queue.cup} is supposed to exist at ${queue.startedOn}`,
         );
       }
     }
@@ -202,11 +202,7 @@ export class CanvasRenderer {
         animation.startedAt + currentStep.length / this.animationSpeed <=
         now
       ) {
-        cup.position = add2(
-          [],
-          currentStep.amount,
-          cup.beforeAnimation
-        ) as Vec2Like;
+        cup.position = add2(currentStep.amount, cup.beforeAnimation) as Vec2;
         cup.beforeAnimation = cup.position;
         if (animation.step + 1 >= animation.steps.length) {
           this.animationsInProgress.splice(index, 1);
@@ -230,7 +226,7 @@ export class CanvasRenderer {
   private renderAnimationState() {
     if (!this.context) return;
 
-    const cups: { position: Vec2Like; index: number }[] = [];
+    const cups: { position: Vec2; index: number }[] = [];
 
     for (let index = 0; index < this.animationState.cups.length; index++) {
       const cup = this.animationState.cups[index];
@@ -258,7 +254,7 @@ export class CanvasRenderer {
         position[0],
         position[1],
         cupSize[0],
-        cupSize[1]
+        cupSize[1],
       );
 
       const label = Object.values(this.cupOrigins).indexOf(index) + 1;
@@ -271,7 +267,7 @@ export class CanvasRenderer {
       this.context.fillText(
         String(label),
         position[0] + cupSize[0] / 2,
-        position[1] - 20
+        position[1] - 20,
       );
     }
   }
@@ -331,7 +327,7 @@ export class CanvasRenderer {
         ballY,
         ballRadius,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
       this.context.fill();
       this.context.stroke();

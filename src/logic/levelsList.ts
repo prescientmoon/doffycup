@@ -1,4 +1,4 @@
-import { Level, Program } from "src/types/Program";
+import { Level } from "src/types/Program";
 export const levelsList: Level[] = [
   {
     cups: 2,

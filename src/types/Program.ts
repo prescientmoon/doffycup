@@ -1,8 +1,9 @@
-import { Vec2Like } from "@thi.ng/vectors";
 import { ComponentChildren } from "preact";
 import { ADT } from "ts-adt";
 
 // ========== High level dsl
+export type Vec2 = [number, number];
+
 export interface LevelSection {
   hidden: boolean;
   program: Program;
@@ -56,7 +57,7 @@ export type ExecutionAnimation = ADT<{
 }>;
 
 export type AnimationStep = {
-  amount: Vec2Like;
+  amount: Vec2;
   length: number;
 };
 
@@ -71,8 +72,8 @@ export type AnimationQueues = {
 
 export type AnimationState = {
   cups: Array<{
-    position: Vec2Like;
-    beforeAnimation: Vec2Like;
+    position: Vec2;
+    beforeAnimation: Vec2;
     isLifted: boolean;
     ball: BlockColor | null;
   }>;

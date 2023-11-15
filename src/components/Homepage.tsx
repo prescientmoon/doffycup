@@ -1,18 +1,14 @@
-import { route } from "preact-router";
+import { h } from "preact";
+import { Link } from "wouter-preact";
 
 import "../styles/homepage.css";
 
 export default () => {
-    return (
-        <div className="home-page">
-            <div
-                className="menuButton"
-                onClick={() => {
-                    route("/levels", true);
-                }}
-            >
-                PLAY
-            </div>
-        </div>
-    );
+  return (
+    <div className="home-page">
+      <Link href="/levels">
+        <div className="menuButton">PLAY</div>
+      </Link>
+    </div>
+  );
 };
