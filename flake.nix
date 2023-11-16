@@ -50,9 +50,11 @@
 
         apps.compute-npm-dep-hash = {
           type = "app";
-          program = (pkgs.writeShellScript "compute-npm-dep-hash" ''
-            ${lib.getExe pkgs.prefetch-npm-deps} ./package-lock.json > ./npm-deps-hash
-          '').outPath;
+          program = pkgs.lib.getExe (pkgs.writeShellApplication {
+            name = "compute-npm-dep-hash";
+            runtimeInputs = [ pkgs.prefetch-npm-deps ];
+            text = "prefetch-npm-deps ./package-lock.json > ./npm-deps-hash";
+          });
         };
       }
     );
