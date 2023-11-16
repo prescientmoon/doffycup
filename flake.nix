@@ -9,31 +9,33 @@
         nodejs = pkgs.nodejs_18;
       in
       rec {
-        packages.doffycup = pkgs.buildNpmPackage {
-          name = "doffycup";
+        packages.doffycup = pkgs.buildNpmPackage.override
+          { stdenv = pkgs.stdenvNoCC; }
+          {
+            name = "doffycup";
 
-          buildInputs = [ nodejs pkgs.gzip ];
+            buildInputs = [ nodejs pkgs.gzip ];
 
-          src = pkgs.lib.cleanSource ./.;
-          npmDepsHash = builtins.readFile ./npm-deps-hash;
+            src = pkgs.lib.cleanSource ./.;
+            npmDepsHash = builtins.readFile ./npm-deps-hash;
 
-          ESBUILD_BASEURL = "";
+            ESBUILD_BASEURL = "";
 
-          postBuild = ''
-            # Github pages requires an additional 404.html file
-            cp dist/{index,404}.html
+            postBuild = ''
+              # Github pages requires an additional 404.html file
+              cp dist/{index,404}.html
 
-            # -k = keeps the original files in place
-            # -r = recursive
-            # -9 = best compression
-            gzip -kr9 dist
-          '';
+              # -k = keeps the original files in place
+              # -r = recursive
+              # -9 = best compression
+              gzip -kr9 dist
+            '';
 
-          installPhase = ''
-            mkdir $out
-            cp -r dist $out/www
-          '';
-        };
+            installPhase = ''
+              mkdir $out
+              cp -r dist $out/www
+            '';
+          };
 
         # Github pages deploys to a subfolder
         packages.doffycup-github-pages = packages.doffycup.overrideAttrs {
