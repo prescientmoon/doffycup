@@ -17,9 +17,8 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
+      # Here for vyc to be able to modify deps without having to run a nix command
       - name: Update npm dep hash
-        # Only recompute the hash if the lock changed
-        if: "github.event_name == 'push' && contains(github.event.paths, 'package-lock.json')"
         run: nix run .#compute-npm-dep-hash
 
       - name: Commit and push npm-dep-hash
