@@ -2,7 +2,6 @@ name: Build and deploy
 
 on:
   push:
-  pull_request:
 
 permissions:
   contents: write
@@ -19,10 +18,9 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Update npm dep hash
-        run: |
-          # Only recompute the hash if the lock changed
-          git diff --quiet --cached package-lock.json \
-            || nix run .#compute-npm-dep-hash
+        # Only recompute the hash if the lock changed
+        if: "github.event_name == 'push' && contains(github.event.paths, 'package-lock.json')"
+        run: nix run .#compute-npm-dep-hash
 
       - name: Commit and push npm-dep-hash
         run: |
