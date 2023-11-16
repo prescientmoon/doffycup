@@ -1,7 +1,5 @@
 import { h } from "preact";
-import { useReducer } from "preact/hooks";
 import { Link, Route, Router } from "wouter-preact";
-import { produce } from "immer";
 
 import WorldMap from "./WorldMap";
 import NotFound from "./NotFound";
@@ -9,15 +7,12 @@ import Homepage from "./Homepage";
 import Level from "./Level";
 import Home from "../icons/home";
 import LevelsIcon from "../icons/levels";
-import { AppContext, initialState, updateState } from "../logic/state";
+import { AppContext, useStateReducer } from "../logic/state";
 
 import "../styles/app.css";
 
 export function App() {
-  const context: AppContext = useReducer(
-    (state, action) => produce(state, (draft) => updateState(draft, action)),
-    initialState,
-  );
+  const context = useStateReducer();
 
   return (
     <AppContext.Provider value={context}>

@@ -12,7 +12,6 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "immer": "^10.0.3",
     "preact": "^10.19.2",
     "ts-adt": "^2.1.2",
     "wouter-preact": "^2.12.1"
