@@ -6,6 +6,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        lib = pkgs.lib;
         nodejs = pkgs.nodejs_18;
       in
       rec {
@@ -16,7 +17,7 @@
 
             buildInputs = [ nodejs pkgs.gzip ];
 
-            src = pkgs.lib.cleanSource ./.;
+            src = lib.cleanSource ./.;
             npmDepsHash = builtins.readFile ./npm-deps-hash;
 
             ESBUILD_BASEURL = "";
@@ -43,18 +44,15 @@
         };
 
         packages.default = packages.doffycup;
-
         devShells.default = pkgs.mkShell {
           packages = [ nodejs ];
         };
 
         apps.compute-npm-dep-hash = {
           type = "app";
-          program = pkgs.lib.getExe (pkgs.writeShellApplication {
-            name = "generate-layout-previes";
-            runtimeInputs = [ pkgs.prefetch-npm-deps ];
-            text = "prefetch-npm-deps ./package-lock.json > ./npm-deps-hash";
-          });
+          program = (pkgs.writeShellScript "compute-npm-dep-hash" ''
+            ${lib.getExe pkgs.prefetch-npm-deps} ./package-lock.json > ./npm-deps-hash
+          '').outPath;
         };
       }
     );

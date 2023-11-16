@@ -18,6 +18,22 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - name: Update npm dep hash
+        run: |
+          # Only recompute the hash if the lock changed
+          git diff --quiet --cached package-lock.json \
+            || nix run .#compute-npm-dep-hash
+
+      - name: Commit and push npm-dep-hash
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          # Only commit if the dep hash changed
+          git diff --quiet --cached npm-deps-hash \
+            || git commit -m "Update npm dep hash [skip ci]"
+          git push
+
       - name: Build project
         run: nix build .#doffycup-github-pages
 
