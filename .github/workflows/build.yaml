@@ -19,10 +19,8 @@ jobs:
 
       # Here for vyc to be able to modify deps without having to run a nix command
       - name: Update npm dep hash
-        run: nix run .#compute-npm-dep-hash
-
-      - name: Commit and push npm-dep-hash
         run: |
+          nix run .#compute-npm-dep-hash
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
