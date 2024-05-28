@@ -1,6 +1,6 @@
 # Doffycup
 
-Doffycup is a small game with the goal of introducing young children to basic programming concepts. An online version you can try for yourself is hosted on [github pages](https://mateiadrielrafael.github.io/doffycup/).
+Doffycup is a small game with the goal of introducing young children to basic programming concepts. An online version you can try for yourself can be found [here](https://doffycup.moonythm.dev).
 
 ## Tech stack
 

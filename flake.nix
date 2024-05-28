@@ -38,10 +38,7 @@
             '';
           };
 
-        # Github pages deploys to a subfolder
-        packages.doffycup-github-pages = packages.doffycup.overrideAttrs {
-          ESBUILD_BASEURL = "/doffycup";
-        };
+        packages.doffycup-github-pages = packages.doffycup;
 
         packages.default = packages.doffycup;
         devShells.default = pkgs.mkShell {
